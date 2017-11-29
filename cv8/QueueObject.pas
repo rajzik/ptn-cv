@@ -122,3 +122,9 @@ end;
 
 
 end.
+
+
+
+{
+	copy of Queue.pas
+}

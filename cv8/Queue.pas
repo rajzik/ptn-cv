@@ -38,6 +38,14 @@ begin
 	q.first := NIL;
 end;
 
+{
+	Push 
+
+	Inserting data from start of queue.
+	
+	@param <q : fronta> 
+	@param <p : DataItem> Data
+}
 procedure vloz (var q : fronta; p: DataItem);
 var pom1 : PListItem;
 begin
@@ -55,25 +63,36 @@ begin
 end;
 
 
+{
+	Pop function
 
+	disposing from back of queue
 
+	@param <q : fronta> 
+	@param <var data : DataItem> Returning value by reference
+}
 
 procedure odeber (var q : fronta; var data : DataItem);
 var pom, pom2 : PListItem;
 begin
+	{ Empty queue }
 	if jePrazdna(q) then begin
 		 data := nil;
 	end 
+	{ Only one element in queue }
 	else if q.first^.next = nil then begin
 		data := q.first^.data;
 		dispose (q.first);
 		q.first := nil;	
-	end else begin 
+	end 
+	{ More than one element in queue }
+	else begin 
 	pom := q.first;
 	while pom^.next <> nil do begin
 		pom2 := pom;	
 		pom := pom^.next;
 	end;
+	{ We need 2 (prev, last) elements to dispose last one and cleanup reference afterwards. }
 	pom2^.next := nil;
 	data := pom^.data;
 	dispose(pom);
@@ -81,6 +100,12 @@ begin
 	end;
 end;
 
+{
+	Print
+	@param <q : fronta> 
+	@param <jak : vypisTyp> Helper function for managing general pointer
+	@param <T : text> output file, Can be output `stdout` 
+}
 procedure vypis (var q : fronta; jak : vypisTyp; var T: text);
 var pom : PListItem;
 
@@ -97,8 +122,6 @@ begin
 	jePrazdna := q.first = NIL;
 end;
 
-
-
 function pocet(q:fronta): integer;
 var i : integer;
 	pom : PListItem;
@@ -112,6 +135,9 @@ begin
 	pocet := i;
 end;
 
+{
+	Basic dispose, until queue is empty.
+}
 procedure zrus (var q: fronta);
 var data : dataItem;
 begin
@@ -120,6 +146,5 @@ begin
 	until jePrazdna(q); 
 
 end;
-
 
 end.

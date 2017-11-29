@@ -24,11 +24,18 @@ end;
 
 
 
-
+{
+	Some black pascal magic.
+	When I wrote this, only Hala and I understood what I was doing.
+	Now, Hala only knows
+}
 operator = (a, b : bigset) equals : boolean;
 type myrbs = 1 .. maxbs;
 	myrbsExtended = 0 .. maxbs;
 	mybs = array [myrbs] of byte;
+{
+	black magic of retyping with same address.
+}
 var mya : mybs absolute a;
 	myb : mybs absolute b;
 	 i : myrbsExtended; 
@@ -38,6 +45,7 @@ begin
 	repeat
 		inc(i);
 	until (not (mya[i] = myb[i])) or (i = high(myrbsExtended));
+
 	equals := mya[i] = myb[i];
 end;
 

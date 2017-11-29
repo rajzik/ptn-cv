@@ -70,7 +70,7 @@ end;
 
 
 begin;
-	{ pristi tyden prace se souborem bez typu }
+
 
 	getMem(m, poc * sizeof(longword));
 	for i := 1 to poc do begin 

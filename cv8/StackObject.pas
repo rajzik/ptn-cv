@@ -37,3 +37,11 @@ begin
 end;
 
 end.
+
+
+{
+	Inheritance
+	Rewriting only pop function.
+	rest is already implemented.
+	See QueueObject.pas
+}

@@ -29,7 +29,9 @@ procedure zrus (var s: prioritniFronta);
 
 implementation
 
-
+{
+	Helper function for swapping two DataItems
+}
 procedure swp (var A, B: DataItem); 
 var tempData : DataItem;
 begin
@@ -44,7 +46,14 @@ begin
 end;
 
 
+{
+	Inserting in sorted list 
 
+	Add new item at start of queue. 
+	sort afterwards. 
+	Modified bubble sort -> it's already sorted.
+
+}
 procedure vloz (var s : prioritniFronta; p: DataItem; prioritniFce : prioritniFunkce);
 var pom1, pom2 : PListItem;
 begin 
@@ -59,21 +68,8 @@ begin
 		pom2 := pom2^.next;
 	end;
 
-		{	
-		while ((pom1 <> nil) and prioritniFce(p, pom1^.data)) do begin
-			pom2 := pom1;
-			pom1 := pom1^.next;
-		end;
-		
-		new (pom3);
-		pom3^.data := p;
-		pom3^.next := pom1;
-		if (pom2 <> nil) then begin
-			pom2^.next := pom3;
-		end;
-	}
-
 end;
+
 procedure odeber (var s : prioritniFronta; var data: DataItem);
 begin
 	Queue.odeber(s, data);
@@ -83,6 +79,7 @@ procedure vypis (var s : prioritniFronta; jak : vypisTyp; var T : text);
 begin
 	Queue.vypis(s, jak, T);
 end;
+
 function pocet(s:prioritniFronta): integer;
 begin
 	pocet := Queue.pocet(s);
@@ -93,11 +90,9 @@ begin
 	jePrazdna := Queue.jePrazdna(s);
 end;
 
-
 procedure zrus (var s: prioritniFronta);
 begin
 	Queue.zrus(s);
 end;
-
 
 end.

@@ -8,17 +8,14 @@ var fr : fronta;
 	p, pom: DataItem;
 	counter : longint;
 
-	
 
 function Zpusob1(data: DataItem): string;
 var pom, pom2 : string;
-	
 begin;
 	inc(counter);
 	str(counter:5, pom);
 	str(mujInt(data^), pom2);
 	Zpusob1 := pom + ': ' + pom2;
-
 end;
 
 
@@ -59,3 +56,6 @@ begin;
 	
 end.
 
+{
+	Object queue usage
+}
