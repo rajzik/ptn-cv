@@ -1,0 +1,38 @@
+1. 
+Definujte dva polymorfní objekty. 
+První implementuje uspořádaný binární strom řetězců, kde platí, 
+že řetězce v levém podstromu jsou podle abecedy dříve než v daném uzlu, 
+hodnoty v pravém podstromu jsou později než v daném uzlu. 
+Operace: inicializace, 
+vložení řetězce, 
+uspořádaný výpis obsahu stromu podle abecedy do textového souboru. 
+Druhý objekt uspořádává řetězce podle délky -- delší řetězce vlevo a kratší
+vpravo z daného uzlu.
+
+2. V souboru bez udání typu jsou údaje o pracovní neschopnosti zaměstnanců. U každého zaměstnance je uvedeno jméno a příjmení (jeden řetězec uložený na minimálním prostoru s délkou v prvním bajtu), datum počátku neschopnosti (celočíselný čtyřbajtový údaj) a počet dní neschopnosti. Napište program, který přečte tento soubor, vypíše na standardní výstup průměrný počet dní neschopnosti a jméno a příjmení pracovníka s největším počtem dnů pracovní neschopnosti. Název vstupního souboru přečtěte z prvního parametru z příkazového řádku.
+Na tuto otázku můžete odpovědět libovolně dlouhým textem. Odpověď bude vyhodnocena zkoušejícím ručně.
+type
+
+
+3. V textovém souboru je text knihy v kódování ISO Latin 2. Navrhněte tabulku s rozptýlenými hesly, která bude uchovávat všechna slova této publikace s počty jejich výskytů v textu. Napište podprogram, který následně vypíše obsah celé tabulky.
+
+Na tuto otázku můžete odpovědět libovolně dlouhým textem. Odpověď bude vyhodnocena zkoušejícím ručně.
+Student na otázku neodpověděl.
+
+
+4. Uvažujme modul pro ukládání obecných dat do maticové struktury. Není dopředu známo, jaké rozměry matice může mít, je proto nutné ji implementovat formou dynamické datové struktury (například lineárního seznamu). Je dáno rozhraní modulu:
+
+unit Matice;
+
+interface
+type 
+     MatXY = ... {doplňte definici tohoto a případných dalších potřebných datových typů}
+     TypJakVypsat = function (A: pointer): string;
+procedure Init(var M: MatXY); {vyprázdnění matice}
+procedure Vypis(M: MatXY; X, Y: longword; JakVypsat: TypJakVypsat);
+  {vypíše hodnotu na souřadnicích řádku X a sloupce Y na standardní výstup}
+procedure Vloz(var M: MatXY; X, Y: longword; D: pointer);
+  {vloží do matice prvek D se souřadnicemi řádku X a sloupce Y}
+implementation
+
+Doplňte potřebné datové typy a implementační část modulu. 
