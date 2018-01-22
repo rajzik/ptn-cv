@@ -1,0 +1,28 @@
+[Config]
+Compilator.SaveAll=0
+Compilator.Capture=0
+Compilator.HideOutput=0
+Compilator.LogType=0
+DefaultCPIndex=0
+LogtoEnd=1
+DontOpen=0
+AbsolutePath=0
+FileFormat=0
+ProjectFilesOnly=0
+[Project tree]
+ed
+	+Složka
+		predn1.lau
+		slajdyptn.sty
+[Open project files]
+0=slajdyptn.sty
+1=p1_paradig.lau
+[Selected Project Files]
+Main=
+Selected=slajdyptn.sty
+[slajdyptn.sty]
+TopLine=141
+Caret=1,149
+[p1_paradig.lau]
+TopLine=1
+Caret=1,7

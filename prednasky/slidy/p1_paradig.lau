@@ -1,0 +1,128 @@
+\documentclass[12pt,xetex,xcolor=svgnames]{beamer}
+\usepackage{slajdyptn}
+
+\begin{document}
+
+% \tisk
+\prez{JR}{Programovací techniky}{~}{Úvod. Programovací paradigmata}
+
+\kap{Úvod}
+
+\begin{frame}[fragile]\title{Předmět Programovací techniky}
+\vyznac{Cíl: programování efektivně a~bezpečně}
+\begin{itemize}
+\bod Obsah
+  \begin{enumerate}
+  \bod Rozšíření informací o~implementačním jazyce
+  \bod Pojem abstraktního typu a~jeho implementace
+  \bod Algoritmy, hodnocení složitosti
+  \end{enumerate}
+\bod Nástroje
+  \begin{enumerate}
+  \bod Výukový jazyk
+  \bod Dávkové programy
+  \end{enumerate}
+\bod Hodnocení
+  \begin{enumerate}
+  \bod Zkouška -- příklady (nebo fragmenty)
+  \bod Uplatnění vhodného přístupu
+  \bod Čas zpracování (70 minut) 
+  \end{enumerate}
+\end{itemize}
+\end{frame}
+
+\kap{Programovací paradigmata}
+
+\begin{frame}[fragile]\frametitle{Programovací paradigmata}
+\begin{itemize}
+\bod \vyznac{Procedurální}
+  \begin{itemize}
+  \bod Nejstarší a~nejrozšířenější
+  \bod Odpovídá strojovému přístupu
+  \bod Popisuje krok za krokem řešení problému
+  \bod Běžné programovací jazyky (Pascal, C, \dots) 
+  \end{itemize}
+\bod \vyznac{Funkcionální}
+  \begin{itemize}
+  \bod Vyčíslování funkcí
+  \bod Funkce a~seznamy v~parametrech funkcí 
+  \bod LISP (tabulkové procesory) 
+  \end{itemize}
+\bod \vyznac{Logické}
+  \begin{itemize}
+  \bod Seznam faktů: axiomy, vztahy
+  \bod Řešení dotazu
+  \bod ProLog
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\kap{Jazyky a~jejich úrovně}
+
+\begin{frame}[fragile]\frametitle{Strojový kód}
+\begin{itemize}
+\bod Posloupnost instrukcí vyjádřená operačními kódy a~absolutními adresami paměti
+\bod Je nejbližší stroji, nejvzdálenější člověku; jediná forma, které procesor přímo rozumí
+\bod Dnes se prakticky nepoužívá přímo, je výsledkem překladu z~jiné úrovně programovacího jazyka
+\bod Tvar neumožňuje efektivně provádět změny (nutné přepočítávat adresy kódu a~proměnných v~paměti)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Jazyk symbolických instrukcí}
+\begin{itemize}
+\bod Posloupnost instrukcí vyjádřená symbolickými zkratkami (ADD, MUL, MOV), 
+adresy v~paměti mohou být pojmenovány identifikátory
+\bod Detailní řízení činnosti stroje
+\bod Používá se například pro programování ovladačů zařízení
+\bod Překlad, linkování (spojování = assembly, assembler) 
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Vyšší programovací jazyk}
+\begin{itemize}
+\bod Již ne instrukce, ale vyšší celky -- příkazy
+\bod Nezávislost na stroji a~hardwarové architektuře
+\bod Nástup strukturovaných metod, objektových metod
+\bod Univerzalita jazyků (Fortran, C, Pascal)
+\bod Implementace jazyků -- tvorba překladačů, zavlékání překladačů
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Jazyky 4. generace (4GL)}
+\begin{itemize}
+\bod Další ulehčení práce programátora
+\bod Specializované aplikace (SQL)
+\bod Možná změna paradigmatu (ProLog)
+\bod Koexistence s~jazyky 3. generace v~současné době
+\end{itemize}
+\end{frame}
+
+\kap{Typy překladačů a~aplikací}
+\pkap{Kompilace a~interpretace}
+\begin{frame}[fragile]\frametitle{Interpretační a~generační překlad}
+\begin{itemize}
+\bod Kompilátor = překladač vyššího PJ do strojového kódu
+\bod Generační překladač tvoří spustitelný modul
+\bod Vlastnosti: bohatá syntax, kontrola celého kódu, rychlý běh výsledku
+\bod Interpretační překladač překládá a~hned provádí každý příkaz (např. řádek)
+\bod Vlastnosti: interaktivita, slabší kontrola, méně datových typů, pomalejší běh výsledku
+\end{itemize}
+\end{frame}
+
+\pkap{Dávkové a~interaktivní aplikace}
+\begin{frame}[fragile]\frametitle{Dávkové a~interaktivní aplikace}
+\begin{itemize}
+\bod Pravidlo $90:10$ -- 90\,\% kódu programu tvoří uživatelské rozhraní, zbytek je vlastní algoritmus
+\bod Interaktivní aplikace musí řešit mnoho situací spojených se vstupem a~s~výstupem pro člověka
+\bod Existují vývojové prostředky pro usnadnění návrhu a~použití uživatelského rozhraní
+\bod Dávková aplikace -- nemá uživatelské rozhraní
+\bod Efektivní a~malé programy, komunikují přes příkazový řádek a~standardní vstupy a~výstupy
+\bod Spojování efektivních a~rychlých komponent v~dávkách
+\bod Lze se soustředit pouze na algoritmus
+\bod Snadnější ladění při přípravě dat do vstupního souboru, snadnější diagnostika filtrováním výstupů
+\end{itemize}
+\end{frame}
+
+\end{document}
+

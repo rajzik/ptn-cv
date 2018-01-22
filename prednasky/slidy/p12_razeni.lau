@@ -1,0 +1,337 @@
+\documentclass[12pt,xetex,xcolor=svgnames]{beamer}
+\usepackage{slajdyptn}
+
+\begin{document}
+
+% \tisk
+\prez{JR}{Programovací techniky}{~}{Řazení údajů}
+
+\kap{Základní pojmy}
+\begin{frame}[fragile]\frametitle{Základní pojmy}
+\begin{itemize}
+\bod Řazení = uspořádání údajů podle velikosti
+\bod Existuje relace úplného uspořádání na množině dat
+\bod Třídění = rozdělení množiny dat na části (rozklad množiny)
+\bod Existuje relace ekvivalence
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Základní pojmy}
+\begin{itemize}
+\bod Přímé metody = realizace základního principu
+\bod Modifikované metody = \uv{zlepšení} principu
+\bod in situ = prostorová složitost je dána vstupními daty
+\bod stabilita metody = data se stejnými klíči se nepřeskupují
+\bod přímé řazení / nepřímé řazení = přeskupují/nepřeskupují se řazené údaje
+\end{itemize}
+\end{frame}
+
+\kap{Metody}
+\begin{frame}[fragile]\frametitle{Metody}
+\begin{itemize}
+\bod výběrové
+\bod vkládací
+\bod rozdělovací
+\bod slučovací
+\bod Výběr je singulární případ rozdělování, vkládání je singulární případ slučování
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Charakter metod}
+\begin{itemize}
+\bod Přirozené: jsou schopny využít částečně seřazených dat
+\bod Podle časové složitosti lineární, složené logaritmické, kvadratické, horší
+\bod Ve všech dalších příkladech: Pole P, obsazeno prvních N indexů, data jsou porovnatelná
+\end{itemize}
+\end{frame}
+
+\kap{Výběrové metody}
+
+\pkap{Přímý výběr (Straight Selection)}
+
+\begin{frame}[fragile]\frametitle{Přímý výběr}
+\begin{itemize}
+\bod Princip: výběr extrému a~jeho uložení do cílového pole
+\bod Varianta in-situ: pole má dvě části
+\bod Obecná procedura pro záměnu prvků: 
+\begin{Verbatim}
+\PROCEDURE Zamena(\VAR P: Pole; A, B: Indexy);
+ \VAR Pom: Slozka;
+ \BEGIN \IF A<>B \THEN \BEGIN
+          Pom:=P[A];
+          P[A]:=P[B];
+          P[B]:=Pom
+        \END  
+ \END;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Přímý výběr}
+\begin{itemize}
+\bod Funkce pro nalezení extrému mezi zadanými indexy:
+\begin{Verbatim}
+\FUNCTION Extrem(P: Pole; 
+                A, B: indexy): Indexy;
+ \VAR V, I: Indexy;
+ \BEGIN V:=A;
+       \FOR I:=A+1 \TO B \DO
+         \IF P[I]<P[V] \THEN V:=I;
+       Extrem:=V
+ \END;
+\end{Verbatim}
+\bod Vlastní řazení:
+\begin{Verbatim}
+\FOR I:=N \DOWNTO 2 \DO 
+   Zamena(P, Extrem(P, 1, I), I); 
+\end{Verbatim}
+\bod Časová složitost kvadratická ($k\cdot N^2$)
+\end{itemize}
+\end{frame}
+
+\pkap{Bublinové řazení (Bubble Sort)}
+\begin{frame}[fragile]\frametitle{Bubble sort}
+\begin{itemize}
+\bod Varianta s~detekcí uspořádání -- přirozená
+{\footnotesize
+\begin{Verbatim}
+J:=1;
+Jeste:=true;
+\WHILE Jeste \DO \BEGIN
+  Jeste:=false;
+  \FOR I:=1 \TO N-J \DO
+     \IF P[I]>P[I+1] \THEN \BEGIN
+        Zamena(P, I, I+1);
+        Jeste:=true
+     \END;
+  inc(J)
+\END;
+\end{Verbatim}
+}
+\bod Přirozená, sekvenční, stabilní
+\bod Implementační jednoduchost
+\bod Časová složitost kvadratická
+\end{itemize}
+\end{frame}
+
+\pkap{Řazení hromadou (Heap Sort)}
+
+\begin{frame}[fragile]\frametitle{Heap Sort}
+\begin{itemize}
+\bod Pojem hromada -- uspořádaný strom, kde otec je větší než libovolný syn, mezi syny není definováno uspořádání
+\bod Ustavení hromady -- přehození prvků tak, aby platilo pravidlo hromady
+\bod Kořen stromu je extrém
+\bod Strom je reprezentován polem, index levého syna je dvojnásobkem indexu otce, index pravého syna je následníkem levého syna
+\bod Velmi efektivní metoda
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Heap Sort}
+\begin{itemize}
+\bod Vlastní řazení má dva kroky: ustavení hromady
+\begin{Verbatim}
+\FOR I:=N \DIV 2 \DOWNTO 1 \DO Sift(I, N);
+\end{Verbatim}
+\bod Řazení -- odebrání kořene a~ustavení hromady
+\begin{Verbatim}
+\FOR I:=N \DOWNTO 2 \DO \BEGIN
+   Zamena(P, 1, I);
+   Sift(1, I-1)
+\END;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Heap Sort}
+\begin{itemize}
+\bod Klíčová procedura \kod{Sift}
+\bod Příprava:
+\begin{Verbatim}
+\PROCEDURE Sift(L, R: Index);
+ \VAR I,J: Index; Pom: Prvek; 
+     Jeste:Boolean; 
+ \BEGIN I:=L;
+       J:=I*2;
+       Pom:=P[I];
+       Jeste:=J<=R;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Heap Sort}
+\begin{Verbatim}
+     \WHILE Jeste \DO \BEGIN
+       \IF J<R \THEN 
+           \IF P[J]<P[J+1] \THEN J:=J+1;
+        \IF P[I]<P[J] \THEN \BEGIN
+           P[I]:=P[J];
+           I:=J;
+           J:=I*2;
+           Jeste:=J<=R
+        \END \ELSE Jeste:=false;
+        P[I]:=Pom;
+      \END;
+ \END;
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Heap Sort}
+\begin{itemize}
+\bod Nepřirozená, nestabilní, in-situ 
+\bod Časová složitost nejlepší = $k\cdot N\cdot log_2 N$
+\end{itemize}
+\end{frame}
+
+\kap{Vkládací metody}
+
+\pkap{Přímé vkládání (straight insert)}
+
+\begin{frame}[fragile]\frametitle{Přímé vkládání}
+\begin{itemize}
+\bod nalezení vhodného místa pro vkládaný prvek
+\bod odsun následných prvků
+\bod vložení nového prvku
+\bod in-situ, nesekvenční, stabilní varianta
+\bod časová složitost $k\cdot N^2$
+\bod pokud je hledání půlením intervalu, lze zlepšit časovou složitost o~jednu třídu na lineárně logaritmickou = $k\cdot N\cdot log_2 N$
+\end{itemize}
+\end{frame}
+
+\pkap{Řazení bin. stromem}
+
+\begin{frame}[fragile]\frametitle{Řazení stromem}
+\begin{itemize}
+\bod vkládání nových prvků do stromové struktury v~uspořádání o$<=$ls, o$>$ps
+\bod následné provedení operace inorder
+\begin{Verbatim}
+\PROCEDURE Vloz(var S: UkUzel; D: Prvek);
+ \BEGIN \IF S=\NIL \THEN \BEGIN
+          new(S);
+          S^.Data:=D;
+          S^.Vlevo:=\NIL;
+          S^.vpravo:=\NIL
+        \END \ELSE
+          \IF D<S^.Data \THEN Vloz(S^.Vlevo,D)
+                       \ELSE Vloz(S^.Vpravo,D)
+ \END;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Řazení stromem}
+\begin{itemize}
+\bod Vlastní řazení:
+\begin{Verbatim}
+\FOR I:=1 \TO N \DO \BEGIN
+   read(X);
+   Vloz(S, X)
+\END;
+Inorder(S)
+\end{Verbatim}
+\bod časová složitost je $k\cdot N\cdot log_2 N$, nestabilní, nepřirozená 
+\bod implementačně jednoduchá, prostorová složitost úměrná rekurzivnímu
+zanoření $O(S)=k\cdot log_2 N$
+\end{itemize}
+\end{frame}
+
+\pkap{Řazení množinou}
+\begin{frame}[fragile]\frametitle{Řazení množinou}
+\begin{itemize}
+\bod Ideální časová složitost (lineární)
+\bod Velké omezení dat
+\bod Zlepšení: logické pole, celočíselné pole
+\bod Základní princip:
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Řazení množinou}
+\begin{Verbatim}
+\VAR M: \SET \OF TypData;
+    d: TypData;
+\BEGIN M:=[];
+      \WHILE \NOT eof \DO \BEGIN
+         read(d);
+         M:=M + [d];
+      \END;
+      \FOR d:=DM \TO HM \DO
+         \IF d \IN M \THEN write(d);
+\END.
+\end{Verbatim}
+\end{frame}
+
+\pkap{Řazení rozptylováním}
+
+\begin{frame}[fragile]\frametitle{Řazení rozptylováním}
+\begin{itemize}
+\bod Hodnoty lib. typu převádíme (rozptylováním) do hodnot ordinálního typu
+\bod V~synonymech rozptylování musí existovat uspořádání ve stejném smyslu jako v~původních datech
+\bod Překročení omezení dat při řazení množinou
+\bod Efektivita metody závislá na rozptylovací funkci, jejíž vlastnosti (zachování uspořádání) jsou obvykle náročné na implementaci
+\end{itemize}
+\end{frame}
+
+\kap{Rozdělovací metody}
+\pkap{Quick Sort -- Rozděl a~panuj}
+
+\begin{frame}[fragile]\frametitle{Quick Sort}
+\begin{itemize}
+\bod Jedna z~nejrychlejších metod
+\bod Rekurzivní zápis vede k~větší prostorové složitosti
+\bod Základní algoritmus:
+\begin{Verbatim}
+\BEGIN Rozdel;
+      \IF L<J \THEN QuickSort(L, J);
+      \IF I<R \THEN QuickSort(I, R)
+\END;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Quick Sort}
+\footnotesize
+\begin{Verbatim}
+\PROCEDURE QuickSort(L, R: word);
+\VAR I, J: word;
+    X: TypData;
+ \PROCEDURE Rozdel;
+  \BEGIN I:=L; J:=R;
+        X:=P[(I+J) \DIV 2];
+        \REPEAT
+         \WHILE P[I]<X \DO Inc(I);
+         \WHILE P[J]>X \DO Dec(J);
+         \IF I<=J \THEN \BEGIN
+            Zamena(P,I,J);
+            Inc(I);
+            Dec(J)
+         \END
+        \UNTIL I>J
+  \END;
+\end{Verbatim}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Quick Sort}
+\begin{itemize}
+\bod Časová složitost: lineárně logaritmická
+\bod Prostorová složitost (rekurze): logaritmická
+\bod Uspořádaná data -- problematické
+\end{itemize}
+\end{frame}
+
+\kap{Slučovací metody}
+
+\pkap{Merge Sort}
+\begin{frame}[fragile]\frametitle{Merge Sort}
+\begin{itemize}
+\bod Slučování dvou proudů uspořádaných dat
+\bod Cyklické rozdělování a~slučování
+\bod Lineárně logaritmická složitost
+\bod Jeden krok slučování: práce se dvěma soubory, se dvěma frontami (seznamy)
+\end{itemize}
+\end{frame}
+
+\end{document}

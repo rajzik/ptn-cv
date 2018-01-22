@@ -1,0 +1,9 @@
+uses SysUtils;
+var f: text;
+begin Assign(F, 'test.txt');
+      if FileExists('test.txt') then begin
+         writeln('Soubor test.txt existuje.');
+         reset(F); writeln(StdErr, 'Chyba -- existuje.')
+      end else writeln('Soubor test.txt neexistuje.');   
+      writeln(ParamStr(0));
+end.

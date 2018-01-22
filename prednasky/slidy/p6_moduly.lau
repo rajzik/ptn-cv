@@ -1,0 +1,257 @@
+\documentclass[12pt,xetex,xcolor=svgnames]{beamer}
+\usepackage{slajdyptn}
+
+\begin{document}
+
+% \tisk
+\prez{JR}{Programovací techniky}{~}{Implementace ADT. Programové moduly}
+
+\kap{Programový modul}
+\pkap{Pojem programového modulu}
+
+\begin{frame}[fragile]\frametitle{Programový modul}
+\begin{itemize}
+\bod Samostatně kompilovatelná část programového díla
+\bod Uložen v~samostatném souboru
+\bod Umožňuje dělbu práce na programu
+\bod Podporuje strukturovaný přístup
+\bod Vhodná implementace abstraktního typu
+\end{itemize}
+\end{frame}
+
+\pkap{Struktura modulu}
+\begin{frame}[fragile]\frametitle{Struktura modulu}
+\begin{itemize}
+\bod \vyznac{Hlavička:} \kod{\UNIT{} id;}
+\bod Identifikátor modulu musí být shodný se jménem souboru, v~němž je modul zapsán
+\bod \vyznac{Rozhraní (veřejná část):} uvozeno klíčovým slovem \kod{\INTERFACE}
+\bod V~rozhraní jsou běžné definice a~deklarace, podprogramy jsou zde uvedeny jen svými hlavičkami
+\bod Všechny elementy uvedené v~sekci rozhraní jsou viditelné z~vnějšku modulu
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Struktura modulu}
+\begin{itemize}
+\bod \vyznac{Implementace (soukromá část):} uvozena klíčovým slovem \kod{\IMPLEMENTATION}
+\bod Obsahuje rovněž běžné definice a~deklarace, jsou zde uvedena těla podprogramů, jejichž hlavičky jsou v~rozhraní
+\bod Všechny elementy uvedené v~sekci implementace nejsou z~vnějšku modulu dostupné
+\bod \vyznac{Inicializační část:} posloupnost příkazů ohraničená slovy \kod{\BEGIN} a~\kod{\END.}
+\bod Nejsou-li potřeba inicializační příkazy, může chybět klíčové slovo \kod{\BEGIN}
+\end{itemize}
+\end{frame}
+
+\pkap{Použití modulu}
+\begin{frame}[fragile]\frametitle{Použití modulu}
+\begin{itemize}
+\bod V~jiném programu nebo modulu se připojí příkazem \kod{\USES}
+\bod Hierarchie modulů programového celku
+\bod Křížové reference -- modul A~potřebuje modul B a~ten potřebuje modul
+A~\bod Signál chyby v~koncepci a~návrhu díla
+\bod Lze vyřešit voláním pomocí příkazu \kod{\USES} umístěném v~modulu A~v~sekci rozhraní a~v~modulu B v~sekci implementace
+\end{itemize}
+\end{frame}
+
+\pkap{Implementace ADT}
+\begin{frame}[fragile]\frametitle{Implementace abstraktního typu pomocí modulu}
+\begin{itemize}
+\bod Odvození datového typu hodnot v~rozhraní
+\bod Hlavičky operací v~rozhraní
+\bod Těla operací v~sekci implementace
+\bod Všechny prvky zmíněné v~diagramu signatury se objeví v~rozhraní modulu
+\bod Příklad: ADT Zásobník (diagram signatury v~minulé přednášce)
+\bod Použití: Obrácení posloupnosti řetězců na standardním vstupu
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Příklad implementace}
+\begin{Verbatim}
+\UNIT Zasobnik;
+\INTERFACE  
+\TYPE 
+     TypData = \STRING;
+     PClen = ^Clen;
+     Clen = \RECORD
+       data: TypData;
+       dalsi: PClen
+     \END;
+     Stack = PClen;
+
+\PROCEDURE Init(\VAR S: Stack);
+\FUNCTION Empty(S: Stack): boolean;
+\PROCEDURE Add(\VAR S: Stack; D: TypData);
+\PROCEDURE Pop(\VAR S: Stack; \VAR D: TypData);
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Příklad implementace}
+\begin{Verbatim}
+\IMPLEMENTATION
+
+\PROCEDURE Error;
+ \BEGIN 
+   \kom{řešení podle implementace}
+   \kom{zvnějšku není tato procedura dostupná}
+ \END;
+
+\PROCEDURE Init(\VAR S: Stack);
+ \BEGIN S:=\NIL
+ \END;
+
+\kom{... podobně všechny ostatní operace}
+
+\END.
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Použití modulu v~programu}
+\begin{Verbatim}
+\PROGRAM UzijModul;
+\USES Zasobnik;
+\VAR R: \STRING;
+    S: Stack;
+\BEGIN
+      Init(S);
+      \WHILE \NOT eof \DO \BEGIN
+        readln(R);
+        Push(S, R)
+      \END;
+      \WHILE \NOT Empty(S) \DO \BEGIN
+        Remove(S, R);
+        writeln(R);
+      \END;
+\END.
+\end{Verbatim}
+\end{frame}
+
+\kap{Obecné datové složky}
+\begin{frame}[fragile]\frametitle{Obecné datové složky}
+\begin{itemize}
+\bod Implementovaný datový typ lze využít pro jakoukoliv úlohu -- nezáleží na datech
+\bod Pro manipulaci se strukturními prvky to neznamená žádnou změnu
+\bod V~případě manipulace s~daty je nezbytné svěřit rozhodující části uživateli modulu
+\bod Na toto použití je nutné provést v~modulu odpovídající přípravu
+\bod Modifikace modulu: místo konkrétního datového typu složky se použije obecný ukazatel
+\bod Jediná změna v~modulu:
+\begin{Verbatim}
+     TypData = pointer;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Změna v~použití modulu}
+\footnotesize
+\begin{Verbatim}
+\PROGRAM UzijModul;
+\USES Zasobnik;
+\VAR R: \STRING;
+    S: Stack;
+\kom{*} P: pointer;
+\BEGIN Init(S);
+      \WHILE \NOT eof \DO \BEGIN
+        readln(R);
+\kom{*}     GetMem(P,Length(R)+1); 
+\kom{*}     P^:=R;
+        Push(S, P)
+      \END;
+      \WHILE \NOT Empty(S) \DO \BEGIN
+        Remove(S, P);
+\kom{*}     writeln(\STRING(P^));
+      \END;
+\END.
+\end{Verbatim}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Implementace další operace}
+\begin{itemize}
+\bod Vyhledání prvku v~zásobníku -- výsledkem hledání je logická hodnota
+\bod Modifikace úlohy: do zásobníku se budou vkládat jen ty hodnoty, které tam ještě nejsou
+\bod V~modulu: operace \kod{Pritomen}
+\begin{Verbatim}
+\FUNCTION Pritomen(S: Stack; 
+                  D: TypData): boolean;
+ \BEGIN Pom:=S;
+       \WHILE (Pom<>\NIL) \AND
+        \kom{JAK zjistit, že nebylo nalezeno?}
+       \DO Pom:=Pom^.Dalsi;
+       Pritomen:=Pom<>\NIL
+ \END;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Vnější operace modulu}
+\begin{Verbatim}
+\TYPE TypNerovno = \FUNCTION (A, B: TypData): 
+                                     boolean;
+
+\FUNCTION Pritomen(S: Stack; D: TypData;
+          Nerovno: TypNerovno): boolean;
+ \BEGIN Pom:=S;
+       \WHILE (Pom<>\NIL) \AND
+              Nerovno(Pom^.Data, D)
+       \DO Pom:=Pom^.Dalsi;
+       Pritomen:=Pom<>\NIL
+ \END;
+\end{Verbatim}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Použití vnější operace}
+\begin{Verbatim}
+\FUNCTION MojeNerovno(X, Y: TypData): boolean;
+ \BEGIN MojeNerovno:=\STRING(X^)<>\STRING(Y^)
+ \END;
+...
+      \WHILE \NOT eof \DO \BEGIN
+        readln(R);
+        GetMem(P,Length(R)+1); 
+        \STRING(P^):=R;
+        \IF \NOT Pritomen(S, P, @MojeNerovno)
+           \THEN Push(S, P)
+           \ELSE FreeMem(P,Length(R)+1)
+      \END;
+\end{Verbatim}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Modifikace příkladu}
+\begin{itemize}
+\bod Rozhodneme se, že místo řetězců budou nyní na vstupu reálná čísla, úloha jinak zůstává stejná
+\bod Změny v~modulu nebudou žádné
+\bod Program užívající modul se změní jen minimálně:
+\small
+\begin{Verbatim}
+\PROGRAM UzijModul;
+\USES Zasobnik;
+\VAR R: real;
+    S: Stack;
+    P: pointer;
+\FUNCTION DruheNerovno(X, Y: TypData): boolean;
+ \BEGIN DruheNerovno:=real(X^)<>real(Y^)
+ \END;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+ 
+
+\begin{frame}[fragile]\frametitle{Modifikace příkladu}
+\begin{Verbatim}
+\BEGIN Init(S);
+      \WHILE \NOT SeekEof \DO \BEGIN
+        read(R);
+        GetMem(P,SizeOf(R)); 
+        real(P^):=R;
+        \IF \NOT Pritomen(S, P, @DruheNerovno)
+           \THEN Push(S, P)
+           \ELSE FreeMem(P,SizeOf(R))
+      \END;
+      \WHILE \NOT Empty(S) \DO \BEGIN
+        Remove(S, P);
+        writeln(real(P^));
+      \END;
+\END.
+\end{Verbatim}
+\end{frame}
+
+\end{document}

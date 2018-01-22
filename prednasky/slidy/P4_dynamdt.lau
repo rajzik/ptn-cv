@@ -1,0 +1,308 @@
+\documentclass[12pt,xetex,xcolor=svgnames]{beamer}
+\usepackage{slajdyptn}
+
+\begin{document}
+
+% \tisk
+\prez{JR}{Programovací techniky}{~}{Dynamické datové typy a~struktury}
+
+\kap{Dynamické datové typy} 
+\begin{frame}[fragile]\frametitle{Dynamické datové typy}
+\begin{itemize}
+\bod Uchovávají adresu v~paměti
+\bod Určitý ukazatel -- adresa proměnné známého typu
+\bod Obecný ukazatel -- adresa libovolné proměnné
+\bod Podprogram -- adresa podprogramu
+\end{itemize}
+\end{frame}
+
+\pkap{Určitý ukazatel}
+\begin{frame}[fragile]\frametitle{Určitý ukazatel}
+\begin{itemize}
+\bod Definice typu:   
+\begin{Verbatim}
+  \TYPE neco = ^baze;
+\end{Verbatim}
+\bod Operace: 
+\begin{Verbatim}
+\VAR P: neco; 
+     \kom{deklarace ukazatele}
+     new(P);  
+     \kom{alokace paměti, vytvoření proměnné}
+     P^:=...  
+     \kom{přístup k~dynamické proměnné}
+     dispose(P)  
+     \kom{uvolnění paměti, zrušení proměnné}
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Určitý ukazatel}
+\begin{itemize}
+\bod Alternativní alokace a~uvolnění paměti:
+\begin{Verbatim}
+   GetMem(X, N);
+   FreeMem(X, N)
+\end{Verbatim}
+\bod \kod{N} je požadovaný počet bytů
+\bod Zde se nekontroluje velikost paměti a~potřebná velikost pro danou proměnnou
+\end{itemize}
+\end{frame}
+
+\pkap{Obecný ukazatel}
+\begin{frame}[fragile]\frametitle{Obecný ukazatel}
+\begin{itemize}
+\bod Deklarace (viz předchozí přednáška): \kod{X: pointer;}
+\bod Alokace a~dealokace paměti je umožněna výhradně pomocí GetMem a~FreeMem
+\bod Přístup k~proměnné je možný jen po přetypování -- překladač potřebuje informaci o~tom,
+jak má s~danou proměnnou pracovat
+\bod Masové využití pro struktury, které mohou uchovávat data různých typů.
+\end{itemize}
+\end{frame}
+
+\pkap{Typ podprogram}
+\begin{frame}[fragile]\frametitle{Datový typ podprogram}
+\begin{itemize}
+\bod Ukazatel na proceduru nebo funkci.
+\bod Definice typu představuje \uv{šablonu} hlavičky podprogramu, např.
+\begin{Verbatim}
+\TYPE realnafunkce = \FUNCTION (X: real): real;
+\end{Verbatim}
+\bod Deklarace proměnné: 
+\begin{Verbatim}
+\VAR F: realnafunkce;
+\end{Verbatim}
+\bod Přiřazení hodnoty do proměnné typu podprogram:
+\begin{Verbatim}
+     F:=@MojeFunkce;
+\end{Verbatim}
+\bod Operátor @ vydá adresu podprogramu, která je dosazena do ukazatele. Dřívější verze (TP)
+   tento operátor nepotřebovaly.
+\end{itemize}
+\end{frame}
+
+\pkap{Použití typu podprogram}
+\begin{frame}[fragile]\frametitle{Příklad použití}
+\begin{itemize}
+\bod Příklad: Výpočet určitého integrálu reálné funkce jedné proměnné
+\bod Knihovní funkce musíme \uv{zabalit} do vlastních funkcí, na které se pak můžeme odkazovat operátorem @
+\bod Vytvoříme funkce vyhovující uvedené šabloně:
+
+\begin{Verbatim}
+\FUNCTION sinus(X: real): real;
+ \BEGIN sinus:=sin(x) 
+        \kom{nebo jiný výpočet}
+ \END;
+
+\FUNCTION enax(X: real): real;
+ \BEGIN enax:=exp(X)  
+        \kom{nebo jiný výpočet}
+ \END;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Příklad použití -- pokračování}
+\begin{itemize}
+\begin{Verbatim}
+\FUNCTION Integral(A, B: real; 
+                  F: realnafunkce):real;
+ \VAR vysl:real; krok,x:real; I:word;
+ \BEGIN krok:=(B-A)/100;
+       vysl:=(f(A)+f(B))/2;
+       x:=A+krok;
+       \FOR I:=1 \TO 100 \DO \BEGIN
+         vysl:=vysl+f(x);
+         x:=x+krok
+       \END;
+       Integral:=vysl*krok;
+ \END;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Příklad použití -- dokončení}
+\begin{itemize}
+\begin{Verbatim}
+\VAR A, B:real;
+\BEGIN F:=@sinus;
+      readln(A, B);
+      writeln('hodnota pro sinus:', 
+               Integral(A, B, @sinus));
+      writeln('hodnota pro expon.', 
+               Integral(A, B, @enax))
+\END.
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Implementace objektů}
+\begin{itemize}
+\bod Datový typ podprogram je základní součástí implementace objektů
+\bod Záznam obsahující datové složky může být doplněn o~funkční složky formou ukazatelů na podprogramy
+\bod Implementační model objektu:
+\begin{Verbatim}
+\TYPE neco = \RECORD
+       A: integer;
+       B: \STRING[45];
+       C: realnafunkce
+     \END;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Příklad -- alternativní čtení}
+\begin{itemize}
+\bod Zadání příkladu: Vstup -- řada řetězců;
+ výstup -- vstupní řada řetězců v~opačném pořadí.
+\begin{Verbatim}
+\CONST MaxPole=1000;
+      MaxString=100;
+\TYPE Indexy = 1..MaxPole;
+     Pristupy = 0..MaxPole;
+     Retez = \STRING[MaxString];
+     Pole = \ARRAY [Indexy] \OF Retez;
+
+\VAR P: Pole;
+    I, Pocet: Pristupy;
+    k: byte;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Příklad -- alternativní čtení}
+\begin{itemize}
+\begin{Verbatim}
+\FUNCTION CtiJedenRetezec: Retez;
+ \VAR x: byte; pom: Retez;
+ \BEGIN Pom:='';
+       \FOR x:=1 \TO K~\DO \BEGIN 
+          read(Pom[x]);
+          if Pom[x] < ' ' then Pom[x]:=' '
+       \END;
+       Pom[0]:=char(K);
+       CtiJedenRetezec:=Pom;
+ \END;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Příklad -- alternativní čtení}
+\begin{itemize}
+\begin{Verbatim}
+\FUNCTION CtiDruhyRetezec: Retez;
+ \VAR x: byte; pom: Retez; znak: char;
+ \BEGIN Pom:='';
+       read(znak);
+       \WHILE \NOT ((znak \IN [#0..' ']) \OR eof) 
+          \DO \BEGIN
+           Pom:=Pom+Znak;
+           read(Znak)
+       \END;
+       CtiDruhyRetezec:=Pom
+ \END;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Příklad -- alternativní čtení}
+\begin{itemize}
+\begin{Verbatim}
+\FUNCTION CtiTretiRetezec: Retez;
+ \VAR pom: Retez;
+ \BEGIN readln(pom);
+       CtiTretiRetezec:=Pom
+ \END;
+\TYPE TypCteni = function: Retez;
+\VAR Cteni: TypCteni;
+\BEGIN K:=6; Cteni:=@CtiPrvniRetezec;
+      Pocet:=0;
+      \WHILE \NOT eof \DO \BEGIN
+         Inc(Pocet);
+         P[Pocet]:=Cteni;
+      \END;
+      \FOR I:=Pocet \DOWNTO 1 \DO writeln(P[I])
+\END.
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\kap{Dynamické datové struktury}
+\begin{frame}[fragile]\frametitle{Dynamické datové struktury}
+\begin{itemize}
+\bod Seznamy -- jednosměrný, obousměrný, kruhový, aktivní, zásobník, 
+           fronta.
+\bod Strom -- uzly a~následníci, binární, ternární, n-ární, 
+\bod Graf -- orientovaný, neorientovaný
+\bod Konstrukce struktur -- prvky = kontejnery s~daty a~strukturními složkami (záznam)
+\begin{Verbatim}
+\TYPE Ukazatelnaprvek = ^prvek;
+     prvek = \RECORD
+        Data: Typdata;   
+        \kom{datová složka}
+        ukaz: Ukazatelnaprvek; 
+        \kom{strukturní složka}
+     \END;
+\end{Verbatim}
+\bod Kontejnery jsou svázány ukazateli.
+\end{itemize}
+\end{frame}
+
+\pkap{Seznam a~jeho operace}
+\begin{frame}[fragile]\frametitle{Seznam a~operace}
+\begin{itemize}
+\bod Obyčejný seznam: 
+\begin{enumerate}
+  \item Vytvoření prázdného seznamu.
+  \item Vložení prvku do seznamu -- na začátek, konec, 
+        před/za aktivní prvek, obecně
+  \item Odstranění prvku -- začátek, konec, aktivní, jinak
+  \item Změna pořadí prvků -- strukturně, datově
+  \item Průchody -- získání jiné datové struktury, počítání prvků, hledání
+\end{enumerate}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Příklad operace}
+\begin{itemize}
+\bod Manipulace s~ukazateli při vkládání do dvousměrného seznamu
+\begin{Verbatim}
+\IF aktiv<>\NIL \THEN \BEGIN
+  \IF aktiv^.Predch<>\NIL \THEN \BEGIN
+       aktiv^.Predch^.Nasled:=aktiv^.Nasled;
+  \END \ELSE Zac:=aktiv^.Nasled;
+  \IF aktiv^.Nasled<>\NIL \THEN \BEGIN
+       aktiv^.Nasled^.Predch:=aktiv^.Predch;
+  \END \ELSE Kon:=aktiv^.Predch;
+\END;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Příklad operace}
+\begin{itemize}
+\bod Vyhledání a~zrušení prvku
+\footnotesize
+\begin{Verbatim}
+Pom:=Zac;
+\IF Pom<>\NIL \THEN \BEGIN \kom{neprázdný seznam}
+   \IF Pom^.D=hledaný \THEN \BEGIN \kom{rušený je první}
+      Zac:=Zac^.Nasled; Dispose(Pom)
+   \END \ELSE \BEGIN \kom{rušený je jinde}
+      \IF Pom^.Nasled<>\NIL \THEN \BEGIN  
+         \WHILE (Pom^.Nasled<>\NIL) \AND 
+               (Pom^.Nasled^.D<>hledaný)
+               \DO Pom:=Pom^.Nasled;
+         \IF Pom^.Nasled<>\NIL \THEN \BEGIN 
+            Ruseny:=Pom^.Nasled;
+            Pom^.Nasled:=Ruseny^.Nasled;
+            dispose(Ruseny)
+         \END
+       \END
+   \END
+\END;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\end{document}

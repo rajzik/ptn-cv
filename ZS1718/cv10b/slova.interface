@@ -1,0 +1,9 @@
+unit slova;
+interface
+
+const Oddel: set of char = [' ', #13, #10, ',', ':', ';', '.', 
+                            '?', '!', '(', ')', '{', '}', '\', '~', '-'];
+
+function DejSlovo(var F: text): string;
+
+implementation

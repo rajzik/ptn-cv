@@ -1,0 +1,7 @@
+   drak|       |       |       |       |       |  šerm|       |       |       |       |
+       |       | turnaj|       | jízda|       | jízda|       |       |       |   drak|
+       |       |       | turnaj|       |       |       |       |       |       |       |
+       |       |       |       |       |       |   drak| turnaj|       | jízda|       |
+       |       |       |       |   drak|       |       |       |       |       |       |
+       |       |  šerm|       | turnaj|       |       |       |       |       |       |
+       |       |       |       |       |       |       |       | jízda|       |       |

@@ -1,0 +1,8 @@
+7
+type Pole = array [1..10000] of string;
+     UkPole=^Pole;
+var U: UkPole; I,N: word;
+begin readln(N); getmem(U,N*SizeOf(string));
+      for I:=1 to N do readln(U^[I]);
+      for I:=N downto 1 do writeln(U^[I])
+end.      

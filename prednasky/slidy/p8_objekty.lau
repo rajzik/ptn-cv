@@ -1,0 +1,317 @@
+\documentclass[12pt,xetex,xcolor=svgnames]{beamer}
+\usepackage{slajdyptn}
+
+\begin{document}
+
+% \tisk
+\prez{JR}{Programovací techniky}{~}{Objekty}
+
+\kap{Objekty v~jazyce Pascal}
+\pkap{Implementace (zjednodušená)}
+\begin{frame}[fragile]\frametitle{Objekty v~jazyce Pascal}
+\begin{itemize}
+\bod Datový typ \kod{\OBJECT} implementován jako záznam
+\bod Datové složky napřed, pak metody
+\bod Příklad:
+\begin{Verbatim}
+\TYPE Neco = \OBJECT
+     \kom{datové složky:}
+       D: TypData;
+       P: word;
+     \kom{metody}
+       \PROCEDURE A;  
+       \FUNCTION B: longint;
+       \CONSTRUCTOR X(Y: byte);
+       \DESTRUCTOR Z;
+     \END;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Objekty v~jazyce Pascal}
+\begin{itemize}
+\bod Metody mají čtyři typy -- procedura, funkce, konstruktor a~destruktor
+\bod Těla metod jsou definována dále, hlavička se opakuje
+\bod Identifikátor metody je doplněn o~identifikátor typu objektu
+\bod V~tělech metod jsou přímo dostupné datové složky objektu
+\bod V~případě, že objekty jsou definovány v~rozhraní modulu, jsou těla metod umístěna do implementační části
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Objekty v~jazyce Pascal}
+\begin{itemize}
+\bod Příklad implementace metod:
+\begin{Verbatim}
+\PROCEDURE Neco.A;
+ \BEGIN 
+ \END;
+\FUNCTION Neco.B: longint;
+ \BEGIN
+ \END;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Užití objektu}
+\begin{itemize}
+\bod Užití objektu -- objekt je běžná proměnná (statická i~dynamická)
+\bod Deklarace a~užití mají shodnou syntax jako u~záznamu, včetně možnosti použití příkazu \kod{\WITH}:
+\begin{Verbatim}
+\VAR N: Neco;
+\BEGIN N.X(17);
+      \WITH N \DO \BEGIN
+         A;
+         writeln(B)
+      \END;
+\END.
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+
+\kap{Vlastnosti objektů}
+\begin{frame}[fragile]\frametitle{Vlastnosti objektů}
+\begin{enumerate}
+\bod Zapouzdřenost (datové složky + metody v~jedné struktuře, každá datová složka je
+ovladatelná POUZE vhodnou metodou -- syntaktické pomůcky)
+\bod Dědičnost (schopnost převzít datové složky a~metody z~jiného objektu). Datové složky se kopírují a~nemohou být v~následníkovi změněny, metody mohou měnit svá těla. Syntax:
+\begin{Verbatim}
+\TYPE Jiny = \OBJECT(Neco)
+       E: boolean;
+       \PROCEDURE A;
+     \END;
+\end{Verbatim}
+\bod Mnohotvarost (schopnost sady objektů být ovládána stejným způsobem -- stejnými metodami). Je uplatnitelná u~objektů svázaných dědičnými vazbami
+\end{enumerate}
+\end{frame}
+
+\pkap{Implementační vlastnosti}
+
+\begin{frame}[fragile]\frametitle{Vlastnosti objektů}
+\begin{itemize}
+\bod \vyznac{Kompatibilita objektů}
+\bod Přiřazení: předchůdce:=následník
+\bod Všechny složky předchůdce jsou přiřazením naplněny, v~opačném případě by to nebylo zaručeno
+\bod \vyznac{Brzká vazba}
+\bod U~tzv.\,\vyznac{statických metod} -- volání metod objektů je zařízeno pevnou adresou vzniklou při překladu
+\bod \vyznac{Pozdní vazba}
+\bod V~místě volání metody se nesmí použít pevná adresa objektu, musí tam být pouze symbolický odkaz. Ten se naplní v~okamžiku přiřazení konkrétního objektu, tedy až \vyznac{v~době běhu}
+\bod Metoda, u~které je potřeba použít pozdní vazbu, musí být speciálně označena: klíčové slovo \kod{\VIRTUAL}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Polymorfní objekty}
+\begin{itemize}
+\bod \vyznac{Tabulka virtuálních metod} (VMT) -- pole ukazatelů na metody, je implicitní součástí datových složek objektu
+\bod Pro naplnění VMT slouží speciální metoda deklarovaná klíčovým slovem \kod{\CONSTRUCTOR}
+\bod Implementace polymorfismu:
+\bod Sada objektů musí být řetězcem dědiců
+\bod Musí mít stejné metody (stejná jména, parametry)
+\bod Musí mít tyto metody jako virtuální
+\bod Objekty musí mít konstruktory a~ty musí být volány na začátku před prvním použitím objektu.
+\end{itemize}
+\end{frame}
+
+\pkap{Dynamické objekty}
+
+\begin{frame}[fragile]\frametitle{Dynamické objekty}
+\begin{itemize}
+\bod Ukazatel na objekt -- stejně jako na každý jiný bázový typ, kompatibilita ukazatelů má stejný princip jako kompatibilita bázových typů
+\bod Příklad:
+\begin{Verbatim}
+\TYPE ukobjekt = ^Neco;
+     Neco = \OBJECT(predchudce)
+        ...
+        \CONSTRUCTOR Start;
+        \DESTRUCTOR Done;
+     \END;
+\VAR U: UkObjekt;
+\BEGIN new(U);
+      U^.Start;
+      ...
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Dynamické objekty}
+\begin{itemize}
+\bod Rozšíření procedury \kod{new} -- automatické volání konstruktoru:
+\begin{Verbatim}
+new(U, Start); 
+\end{Verbatim}
+\bod Druhé rozšíření \kod{new}: použito jako funkce:
+\begin{Verbatim}
+U:=new(Neco, Start);
+\end{Verbatim}
+\bod Prvním parametrem je \vyznac{datový typ}, proměnná \kod{U} může být \vyznac{libovolným předchůdcem} objektu typu \kod{Neco}
+\bod Rozšíření procedury \kod{Dispose} -- automatické volání destruktoru:
+\begin{Verbatim}
+Dispose(U, Done)
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+
+\kap{ADT a~objekty}
+
+\begin{frame}[fragile]\frametitle{Objektová implementace ADT}
+\begin{itemize}
+\bod Pojetí abstraktního typu odpovídá pojetí objektu: hodnoty typu jsou reprezentovány datovými složkami, povolené operace pak metodami objektu
+\bod Příklad -- implementace seznamu, první typ obyčejný, druhý typ uspořádaný:
+\begin{Verbatim}
+\TYPE TypData = \STRING;
+     UkClen = ^Clen;
+     Clen = \RECORD
+       D: TypData;
+       dalsi: UkClen;
+     \END;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Implementace -- pokračování}
+\begin{Verbatim}
+     seznam = \OBJECT
+       UkPrvni: UkClen;
+       Pocet: word;
+       \CONSTRUCTOR Start;
+       \PROCEDURE init;
+       \PROCEDURE add(Prvek: TypData); \VIRTUAL;
+       \PROCEDURE remove(\VAR Prvek: TypData);
+       \FUNCTION Empty: boolean;
+     \END;
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Implementace -- pokračování}
+\begin{Verbatim}
+\CONSTRUCTOR Seznam.Start;
+ \BEGIN
+ \END;
+\PROCEDURE Seznam.init;
+ \BEGIN UkPrvni:=\NIL;
+       Pocet:=0;
+ \END;
+\kom{... ostatní metody }
+\TYPE UspSeznam = \OBJECT(Seznam)
+       \CONSTRUCTOR Start;
+       \PROCEDURE add(Prvek: Typdata); \VIRTUAL;
+     \END;
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Implementace -- pokračování}
+\begin{Verbatim}
+\CONSTRUCTOR UspSeznam.Start;
+ \BEGIN
+ \END;
+
+\PROCEDURE UspSeznam.add(Prvek: Typdata);
+ \BEGIN \kom{... zařadí řetězec na správné místo}
+ \END;
+
+\VAR S: Seznam;
+    R: \STRING;
+    T: UspSeznam;
+\end{Verbatim}
+\end{frame}
+
+\pkap{Polymorfní podprogramy}
+\begin{frame}[fragile]\frametitle{Polymorfní podprogramy}
+\begin{itemize}
+\bod Jsou to podprogramy, jejichž parametrem jsou objekty
+\bod Uvnitř podprogramu se používají výhradně virtuální metody objektů
+\bod Podle dosazení skutečného parametru dělá podprogram pokaždé jiné akce příslušející danému objektu
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Implementace -- pokračování}
+\begin{itemize}
+\bod Příklad použití seznamu pro uložení a~výpis vstupních řetězců:
+\begin{Verbatim}
+\PROCEDURE Zpracuj(Obecny: Seznam);
+ \BEGIN Obecny.Init;
+       \WHILE \NOT eof \DO \BEGIN
+         readln(R);
+         Obecny.add(R);
+       END;
+       \WHILE \NOT Obecny.empty \DO \BEGIN
+         Obecny.remove(r);
+         writeln(r)
+       \END;
+ \END;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Využití polymorfní procedury}
+\begin{itemize}
+\bod Využití polymorfní procedury pro různá zpracování vstupu (obyčejný opis, seřazení)
+\begin{Verbatim}
+\BEGIN
+      {S.Start; 
+       Zpracuj(S);}
+      T.Start;
+      Zpracuj(T);
+\END.
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Příklad polymorfních objektů}
+\begin{itemize}
+\bod Příklad polymorfních objektů zásobník/fronta:
+\begin{Verbatim}
+\TYPE neco = \OBJECT
+       \CONSTRUCTOR Start;
+       \PROCEDURE Init; \VIRTUAL;
+       \PROCEDURE Vloz(A: \STRING); \VIRTUAL;
+       \FUNCTION Empty: boolean; \VIRTUAL;
+       \FUNCTION Vyjmi: \STRING; \VIRTUAL;
+     \END;
+     dalsi = \OBJECT(neco)
+       \CONSTRUCTOR Start;
+       \PROCEDURE Init; \VIRTUAL;
+       \PROCEDURE Vloz(A: \STRING); \VIRTUAL;
+       \FUNCTION Empty: boolean; \VIRTUAL;
+       \FUNCTION Vyjmi: \STRING; \VIRTUAL;
+     \END;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Příklad polymorfních objektů}
+\begin{Verbatim}
+\PROCEDURE neco.Vloz(A: \STRING);
+ \BEGIN ... vložení do zásobníku
+ \END;
+\PROCEDURE dalsi.Vloz(A: \STRING);
+ \BEGIN ... vložení do fronty
+ \END;
+
+\VAR A:neco; B:dalsi;
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Příklad polymorfních objektů}
+\small
+\begin{Verbatim}
+\PROCEDURE Delej(\VAR X:neco);
+ \VAR R:\STRING;
+\BEGIN X.Init;
+      \WHILE \NOT eof \DO \BEGIN
+        readln(R);
+        X.Vloz(R);
+      \END;
+      \WHILE \NOT X.Empty \DO \BEGIN
+        R:=X.Vyjmi;
+        writeln('--', R)
+      \END
+\END;
+\BEGIN A.Start; Delej(A); 
+      \kom{alternativně:  B.Start; Delej(B);}
+\END.
+\end{Verbatim}
+\end{frame}
+
+\end{document}

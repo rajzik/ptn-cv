@@ -1,0 +1,265 @@
+\documentclass[12pt,xetex,xcolor=svgnames]{beamer}
+\usepackage{slajdyptn}
+
+\begin{document}
+
+% \tisk
+\prez{JR}{Programovací techniky}{~}{O datových typech a~jejich kontrole}
+
+\kap{Typová kontrola}
+
+\begin{frame}[fragile]\frametitle{Typová kontrola}
+\begin{itemize}
+\bod Co to je
+\bod Jaké jsou vlastnosti
+\bod Kdy ji potřebujeme a~kdy ne
+\bod Jak ji ovlivnit -- beztypové struktury
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Co to je}
+\begin{itemize}
+\bod Souvisí s~pojmem kompatibilita typů, identita typů
+\bod Sémantická kontrola zjišťující shodu v~rámci kompatibility
+\bod Okamžik přiřazení
+\bod Okamžik volání podprogramu, parametr odkazem
+\bod Vyčíslování výrazu
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Jaké jsou vlastnosti}
+\begin{itemize}
+\bod V~každém jazyce implementována jinak
+\bod Striktní -- je implementována všude (téměř)
+\bod Volná (žádná) -- je implementována částečně
+\bod Primární vlastnost -- ochrana před chybami
+\bod Někdy komplikuje zápis textu programu
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Kdy ji potřebujeme a~kdy ne}
+\begin{itemize}
+\bod Ano: Čistota jazyka
+\bod Ano: Jazyk pro výuku
+\bod Ano: Tvorba bezpečných aplikací
+\bod Ne: Zjednodušení zápisu programu
+\bod Ne: Umožnění zápisu obecných struktur
+\bod Ne: Tlak praxe
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Jak ji ovlivnit}
+\begin{itemize}
+\bod Volná kontrola se nedá zostřit
+\bod Striktní se dá uvolnit -- obejít
+\bod Přetypování
+\bod Použití konverzních podprogramů
+\bod Použití beztypových struktur 
+\bod Přetěžování operací
+\end{itemize}
+\end{frame}
+
+\kap{Konverze a~přetypování}
+
+\begin{frame}[fragile]\frametitle{Konverze}
+\begin{itemize}
+\bod Změna datového typu, přepočet hodnoty v~paměti
+\bod Příklady explicitní konverze: Str, Val
+\bod Příklady implicitní konverze: \\
+      \kod{R:=B;}   -- konverze celočíselné hodnoty na reálnou\\ 
+      \kod{read(S);} -- konverze posloupnosti znaků na řetězec\\
+      \kod{write(R)} -- konverze reálné hodnoty na posloupnost znaků
+\bod Uživatelské konverze -- vždy s~tvorbou uživatelských typů
+\bod Příklad: textová reprezentace hodnot výčtových typů
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Přetypování}
+\begin{itemize}
+\bod Změna datového typu BEZ přepočtu hodnoty v~paměti
+\bod Podmínka: oba typy musí zabírat v~paměti stejně velký prostor
+\bod Identifikátor typu je zároveň v~roli přetypovací funkce
+\bod Příklad:
+\begin{Verbatim}
+\TYPE mnozina = \SET \OF 0..31;\label{rrmnozina}
+\VAR L: longint;
+    i: byte;
+\BEGIN readln(L);
+      \FOR i:=0 \TO 31 \DO
+        \IF i~\IN mnozina(L) \THEN write('1')
+                           \ELSE write('0');
+\END.
+\end{Verbatim}
+\bod Nekontroluje se, zda hodnota v~paměti odpovídá povolené hodnotě cílového typu
+\end{itemize}
+\end{frame}
+
+\kap{Jak obejít typovou kontrolu}
+\pkap{Beztypové struktury}
+
+\begin{frame}[fragile]\frametitle{Beztypové struktury}
+\begin{itemize}
+\bod Variantní záznam
+\bod Obecný ukazatel
+\bod Soubor bez udání typu
+\end{itemize}
+\end{frame}
+
+\pkap{Variantní záznam}
+\begin{frame}[fragile]\frametitle{Variantní záznam}
+\begin{itemize}
+\bod Schéma záznamu je rozšířeno:   
+\begin{Verbatim}
+  \RECORD
+     A: byte;            \kom{pevná složka}
+     \CASE B: Boolean \OF  \kom{rozlišovací složka}
+     false: (L: longint);\kom{variantní složky}
+     true: (M: mnozina)
+  \END;
+\end{Verbatim}
+
+\bod Původní účel: úspora paměti
+\bod Původní implementace: rozlišovací složka určuje viditelnost variantních složek
+\bod Novější implementace: Rozlišovací složka nemusí mít identifikátor,
+       kontrola viditelnosti se neprovádí
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Variantní záznam}
+\begin{itemize}
+\bod Příklad využití variantního záznamu bez rozlišovací složky:
+\begin{Verbatim}
+\TYPE zaznam = \RECORD
+      \CASE boolean \OF
+       false: (L: longint);
+       true: (M: mnozina) 
+       \kom{definice typu množina je stejná}
+     \END;
+\VAR Z: zaznam;
+\BEGIN readln(Z.L);
+      \FOR I:=0 \TO 31 \DO
+         \IF I~\IN Z.M \THEN write('1')
+                     \ELSE write('0')
+\END.
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\pkap{Obecný ukazatel}
+\begin{frame}[fragile]\frametitle{Obecný ukazatel}
+\begin{itemize}
+\bod (podrobněji ukazatele v~další přednášce)
+\bod Deklarace standardním identifikátorem \kod{pointer}
+\bod Manipulace s~obecným ukazatelem: Vždy je potřebné dodat překladači informaci související s~datovým typem
+\bod Alokace paměti: \kod{GetMem(P, N)} -- dodána informace o~velikosti dynamické proměnné
+\bod Dealokace paměti: \kod{FreeMem(P, N)} -- jako u~alokace, pozor na stejnou velikost uvolňované paměti
+\bod Práce s~dynamickou proměnnou: VŽDY je potřebné přetypování.
+\bod Příklad:
+
+\begin{Verbatim}
+\VAR P: pointer;
+\BEGIN GetMem(P, SizeOf(real));
+      readln(real(P^));
+      ...
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\pkap{Soubor bez udání typu}
+\begin{frame}[fragile]\frametitle{Soubor bez udání typu}
+\begin{itemize}
+\bod Příklad ukládání řetězce na minimálním paměťovém prostoru:
+
+\begin{Verbatim}
+\VAR P: pointer;
+    S: \STRING;
+\BEGIN readln(S); \kom{běžné přečtení}
+      GetMem(P, Length(S)+1); 
+      \kom{přesná alokace podle dat}
+      \STRING(P^):=S;  
+      \kom{přiřazení do získaného prostoru}
+      ...
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Soubor bez udání typu}
+\begin{itemize}
+\bod Netextový soubor, vyjadřuje obecný pohled na soubor jako na posloupnost nespecifikovaných bytů
+\bod Soubor s~udaným typem nese informaci o~velikosti a~typu složky, ve všech operacích se tato informace využívá
+\bod Příklad manipulace s~běžným netextovým souborem:
+\begin{Verbatim}
+\VAR F: \FILE \OF char;
+    B: \STRING;
+\BEGIN assign(F,'neco.txt');
+      reset(F); read(F,B[4]); close(F);
+      reset(F); seek(F,6); write(F,B[5]);
+      rewrite(F); write(...); 
+      seek(F,1); read(F,...)
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Soubor bez udání typu}
+\begin{itemize}
+\bod Soubor bez udaného typu -- deklarace:
+\begin{Verbatim}
+ \VAR F: \FILE;
+\end{Verbatim}
+\bod Ve všech operacích se dodávají informace související s~požadovaným typem:
+\bod Příklady:
+   \kod{assign(F,'bin.bin');}\\
+   \kod{reset(F,1);}  -- dodána informace o~velikosti složky\\
+   \kod{blockread(F,V,200,N);} -- dodána informace o~počtu složek, není prováděna typová kontrola\\
+   \kod{rewrite(F,N);} -- analogie operace reset\\
+   \kod{blockwrite(F,V,100);} -- analogie operace blockread\\
+   \kod{seek(F,10);}  -- odvolání na číslo bloku, číslování v~souboru je od nuly
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Soubor bez udání typu}
+\begin{itemize}
+\bod Příklady manipulací:
+\begin{Verbatim}
+\VAR G: \FILE;
+\BEGIN assign(G,....);
+      reset(G,1);
+      seek(G,10);
+      reset(G,2);
+      seek(G,10);
+\end{Verbatim}
+\bod Aplikace -- drtivá většina netextových souborů v~praxi
+\bod Příklad \uv{databázového} souboru:
+\begin{Verbatim}
+\VAR DB: \FILE;
+    nazev: \STRING[8];
+    delka: byte;
+    pocet: byte;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{pokračování příkladu}
+\begin{itemize}
+\begin{Verbatim}
+\BEGIN assign(DB,'data.db');
+      rewrite(DB,1);
+      pocet:=0; blockwrite(DB,Pocet,1);
+      \WHILE \NOT eof \DO \BEGIN
+        inc(pocet);
+        readln(nazev,delka);
+        blockwrite(DB,nazev[1],8);
+        blockwrite(DB,delka,1);
+      \END;
+      seek(DB,1);
+      blockwrite(DB,pocet,1);
+...
+      close(DB);
+\END.
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,14 @@
+po 7 drak
+po 13 šerm
+út 9 turnaj
+út 11 jízda
+út 13 jízda
+út 17 drak
+st 10 turnaj
+čt 13 drak
+čt 14 turnaj
+čt 16 jízda
+pá 11 drak
+so 9 šerm
+so 11 turnaj
+ne 15 jízda

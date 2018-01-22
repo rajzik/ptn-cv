@@ -1,0 +1,114 @@
+ALGORITMIZACE:
+
+Požadavky z oblasti (jsou využity prvky z odrážky 2 současného přehledu):
+
+2. Algoritmus a jeho vlastnosti, časová a prostorová složitost a její
+stanovení, datové typy a jejich vlastnosti, prostředky pro strukturované a
+modulární programování, abstraktní typy dat a jejich vlastnosti
+
+Doporučená literatura:
+
+Pelánek, Radek. Programátorská cvičebnice: algoritmy v příkladech. Brno:
+Computer Press, 2012. 175 s. ISBN 978-80-251-3751-2.
+
+Töpfer, Pavel. Algoritmy a programovací techniky. Praha: Prometheus, 2010.
+ISBN 978-80-7196-350-9.
+
+
+Navržené otázky k přijímacímu testu (všechny otázky jsou typu 1 z N, vždy 4
+nabízené odpovědi, právě jedna je správná -- označena znakem +):
+
+Předpokládejte, že programátor do zápisu algoritmu pro výpočet průměrné
+teploty zapsal číslo konkrétního měsíce, za nějž se průměr počítá. Kterou ze
+základních vlastností algoritmu tím porušil?
+
++ hromadnost
+- determinističnost
+- opakovatelnost
+- konečnost
+
+V programovacím jazyce představuje pojem "proměnná":
+
++ místo v operační paměti počítače.
+- zástupný symbol pro neznámou nebo nedefinovanou hodnotu.
+- identifikaci operace, která se má provádět s určitou hodnotou.
+- určení směru přesunu dat.
+
+Algoritmus pro seřazení hodnot zvaný "heap sort" (řazení hromadou) má
+časovou složitost náležející do třídy
+
++ lineárně logaritmické
+- lineární
+- kvadratické
+- logaritmické
+
+Pojmem "nepřímá rekurze" označujeme situaci, kdy
+
++ podprogram A volá podprogram B a ten volá podprogram A
+- podprogram A volá opět ve svém těle podprogram A
+- podprogram A volá podprogram B
+- podprogram A volá podprogram B i podprogram A
+
+Pro uložení rodného čísla (deset číslic bez lomítka) do paměti počítače
+použijeme datový typ pro:
+
++ řetězcové hodnoty
+- celočíselné hodnoty
+- desetinné hodnoty
+- logické hodnoty
+
+Předpokládejte, že data jsou uložena v uspořádaném binárním vyhledávacím
+stromu, v němž platí, že hodnota vlevo od daného uzlu je menší než v daném
+uzlu a hodnota vpravo splňuje opačnou podmínku. Pro zjištění, zda se ve
+stromu vyskytuje určitá hledaná hodnota, potřebujeme:
+
++ nejvýše h kroků, kde h je počet hladin stromu
+- nejvýše n kroků, kde n je počet hodnot uložených ve stromu
+- nejvýše n*log n kroků, kde n je počet hodnot uložených ve stromu
+- nejvýše h*h kroků, kde h je počet hladin stromu
+
+V abstraktním typu dat "prioritní fronta" se oproti abstraktnímu typu
+"fronta" mění operace:
+
++ vložení nové hodnoty
+- odebrání hodnoty
+- test prázdnosti
+- výpis všech hodnot na výstup
+
+Algoritmus pro zjištění počtu podprůměrných platů z posloupnosti platů
+zadaných ve vstupním proudu
+
++ vyžaduje dvojí zpracování vstupního proudu
+- vyžaduje jedno zpracování vstupního proudu
+- vyžaduje trojí zpracování vstupního proudu
+- vyžaduje pouze částečné zpracování vstupního proudu
+
+Algoritmus pro výpočet hodnoty y = sin(x) vyžaduje v běžném
+imperativním jazyce
+
++ jednoduchý cyklus
+- dva po sobě jdoucí cykly
+- dva do sebe vnořené cykly
+- žádný cyklus, jen několik přiřazení
+
+Abstraktní datový typ "tabulka s rozptýlenými hesly" umožňuje:
+
++ indexsekvenční vyhledávání
+- výraznou úsporu paměťového prostoru
+- řazení libovolných dat podle velikosti
+- vytváření složitých vazeb mezi uloženými hodnotami
+
+Programové moduly umožňují:
+
++ separátní kompilaci části programového díla
+- separátní spuštění části programového díla
+- definici prvků viditelných výhradně z vnějšího prostředí
+- manipulaci se všemi prvky v celém zbytku programového díla
+
+Základními nástroji strukturovaného programování jsou:
+
++ podprogramy a moduly
+- programové cykly
+- rekurzivní prvky
+- soubory a datové proudy
+

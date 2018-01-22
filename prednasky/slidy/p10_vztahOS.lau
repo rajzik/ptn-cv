@@ -1,0 +1,208 @@
+\documentclass[12pt,xetex,xcolor=svgnames]{beamer}
+\usepackage{slajdyptn}
+
+\begin{document}
+
+% \tisk
+\prez{JR}{Programovací techniky}{~}{Programy v~prostředí operačního systému}
+
+\kap{Standardní vstup a~výstup}
+
+\begin{frame}[fragile]\frametitle{Standardní soubory}
+\begin{itemize}
+\bod Představován textovými soubory \kod{input} a~\kod{output}
+\bod Soubory není třeba deklarovat a~nastavovat
+\bod Specifické odchylky chování při vstupu z~klávesnice
+\bod Speciální textový soubor \kod{StdErr}
+\bod Z~hlediska OS: možné přesměrování vstupu a~výstupu, kolona
+\bod Efektivní ladění s~připravenými daty v~souboru
+\bod Možnost dalšího filtrování nebo zpracování výstupů
+\end{itemize}
+\end{frame}
+
+\kap{Příkazový řádek -- parametry}
+\begin{frame}[fragile]\frametitle{Příkazový řádek}
+\begin{itemize}
+\bod Při spuštění programu je možné zadat na příkazový řádek parametry
+\bod Parametry jsou vhodným doplňkovým vstupem
+\bod Obvykle používány na konfiguraci nebo úpravu činnosti programu
+\bod Funkce pro zjištění počtu parametrů: \kod{ParamCount}
+\bod Funkce pro zjištění hodnoty $n$-tého parametru: \kod{ParamStr(n)}
+\bod Hodnota parametru je vždy řetězec
+\bod Parametry jsou číslovány od 1, hodnotu 0 má úplná cesta a~název spouštěného programu
+\end{itemize}
+\end{frame}
+
+\pkap{Příklad získání jednoznakového a~celočíselného parametru}
+\begin{frame}[fragile]\frametitle{Příklad}
+\begin{itemize}
+\footnotesize
+\begin{Verbatim}
+\PROCEDURE ComLine(\VAR S: longint; \VAR D: char);
+ \VAR Pom: \STRING;
+     Kod: integer;
+ \BEGIN \IF ParamCount>0 \THEN \BEGIN
+         \{je alespoň jeden parametr\}
+         Pom:=ParamStr(1);
+         Val(Pom, S, Kod);
+         \IF ParamCount>1 \THEN \BEGIN
+            \{je i~druhý parametr\}
+            Pom:=ParamStr(2);
+            D:=Pom[1]
+         \END
+       \END
+ \END;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\kap{Proměnné prostředí}
+
+\begin{frame}[fragile]\frametitle{Proměnné prostředí}
+\begin{itemize}
+\bod Každý proces má prostředí, v~němž lze nastavovat řetězcové proměnné
+\bod Proměnné se dědí z~prostředí nadřízeného procesu
+\bod Uvnitř programu lze obsah proměnné přečíst, nikoliv nastavit
+\bod Existuje funkce \kod{GetEnvironmentVariable(X)} pro získání řetězcové hodnoty proměnné X
+\bod Tato funkce je dostupná ze standardního modulu \kod{SysUtils}
+\bod Analogická funkce je \kod{GetEnv} známá i~z~Turbo Pascalu, dostupná v~modulu \kod{oldlinux}
+\end{itemize}
+\end{frame}
+
+\pkap{Příklad}
+
+\begin{frame}[fragile]\frametitle{Příklad}
+\begin{itemize}
+\bod Zpracování hodnoty proměnné prostředí
+\bod Jsou nastaveny dvě uživatelské proměnné \kod{NUMSTART} a~\kod{NUMDELIM}
+\footnotesize
+\begin{Verbatim}
+\PROCEDURE Envir(\VAR S: longint; \VAR D: char);
+ \VAR Pom: \STRING;
+     Kod: integer;
+ \BEGIN Pom:=GetEnvironmentVariable('NUMSTART');
+       \IF Pom<>'' \THEN Val(Pom, S, Kod);
+       \{proměnná neexistuje --> Pom=''\}
+       Pom:=GetEnvironmentVariable('NUMDELIM');
+       \IF Pom<>'' \THEN D:=Pom[1]
+ \END;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\kap{Práce se soubory}
+
+\begin{frame}[fragile]\frametitle{Práce se soubory}
+\begin{itemize}
+\bod Je k~dispozici procedura \kod{Assign}, která sváže souborovou proměnnou v~programu s~konkrétním souborem dostupným v~operačním systému
+\bod Konvence zápisu cesty k~souboru odpovídá použitému operačnímu systému (problémy s~přenositelností)
+\bod Existence souboru není hlídána operačním systémem, není-li ošetřena v~programu, dojde k~běhové chybě
+\bod Způsob ošetření existence souboru je závislý na operačním systému a~na verzi překladače. 
+V modulu \kod{SysUtils} je k dispozici logická funkce \kod{FileExists(jméno)}
+\bod Všechny operace se soubory byly již diskutovány (opakování)
+\end{itemize}
+\end{frame}
+
+\kap{Komplexní příklad}
+
+\begin{frame}[fragile]\frametitle{Komplexní příklad}
+\begin{itemize}
+\bod Konfigurace programu -- čtení dvou parametrů zmíněných v~předchozích příkladech
+\bod Hierarchie nastavení:
+\begin{enumerate}
+\bod Implicitní hodnota 
+\bod Konfigurační soubor (pokud existuje) 
+\bod Proměnná prostředí
+\bod Parametr z~příkazového řádku
+\end{enumerate} 
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Komplexní příklad}
+\footnotesize
+\begin{Verbatim}
+\USES SysUtils; \{práce s~proměnnými prostředí apod.\}
+\VAR Cislo, Start: longint;
+    Radek: \STRING;
+    Delim: char;
+\PROCEDURE Konfig(\VAR S: longint; \VAR D: char);
+ \VAR F: text;
+     R, Pom: \STRING;
+     Kod: integer;
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Komplexní příklad}
+\footnotesize
+\begin{Verbatim}
+ \BEGIN Assign(F, ParamStr(0)+'rc');
+       \{test existence souboru:\}
+       \IF FileExists(ParamStr(0)+'rc') \THEN \BEGIN
+          reset(F);
+          readln(F, R);
+          Pom:=Copy(R, Pos('=',R)+1, 255);
+          \{získání hodnoty řetězce za rovnítkem\}
+          Val(Pom, S, Kod);
+          \{převod na číselnou hodnotu\}
+          readln(F, R);
+          Pom:=Copy(R, Pos('=',R)+1, 1);
+          \{opět hodnota za rovnítkem\}
+          D:=Pom[1]
+       \END   
+ \END;
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Komplexní příklad}
+\footnotesize
+\begin{Verbatim}
+\PROCEDURE Envir(\VAR S: longint; \VAR D: char);
+ \VAR Pom: \STRING;
+     Kod: integer;
+ \BEGIN Pom:=GetEnvironmentVariable('NUMSTART');
+       \IF Pom<>'' \THEN Val(Pom, S, Kod);
+       \{proměnná neexistuje --> Pom=''\}
+       Pom:=GetEnvironmentVariable('NUMDELIM');
+       \IF Pom<>'' \THEN D:=Pom[1]
+ \END;
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Komplexní příklad}
+\footnotesize
+\begin{Verbatim}
+\PROCEDURE ComLine(\VAR S: longint; \VAR D: char);
+ \VAR Pom: \STRING;
+     Kod: integer;
+ \BEGIN \IF ParamCount>0 \THEN \BEGIN
+         \{je alespoň jeden parametr\}
+         Pom:=ParamStr(1);
+         Val(Pom, S, Kod);
+         \IF ParamCount>1 \THEN \BEGIN
+            \{je i~druhý parametr\}
+            Pom:=ParamStr(2);
+            D:=Pom[1]
+         \END
+       \END
+ \END;
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Komplexní příklad}
+\footnotesize
+\begin{Verbatim}
+\BEGIN Start:=1; Delim:=':';  \{implicitní nastavení\}
+      Konfig(Start, Delim);  \{konfigurační soubor\}
+      Envir(Start, Delim);   \{proměnné prostředí\}
+      ComLine(Start, Delim); \{příkazový řádek\}
+      Cislo:=Start;
+      \WHILE \NOT eof \DO \BEGIN
+          readln(Radek);
+          writeln(Cislo:5, Delim, ' ', Radek);
+          Inc(Cislo)
+      \END
+\END.
+\end{Verbatim}
+\end{frame}
+
+\end{document}

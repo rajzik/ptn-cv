@@ -1,0 +1,205 @@
+\documentclass[12pt,xetex,xcolor=svgnames]{beamer}
+\usepackage{slajdyptn}
+
+\begin{document}
+
+% \tisk
+\prez{JR}{Programovací techniky}{~}{Abstraktní datové typy}
+
+\kap{Pojem abstraktního typu} 
+\begin{frame}[fragile]\frametitle{Pojem abstraktního typu}
+\begin{itemize}
+\bod Datový typ = hodnoty, operace
+\bod Konkrétní datové typy jsou implementovány v~daném programovacím jazyce
+\bod Model objektivní reality obvykle není konkrétním typem přímo implementovatelný
+\bod Abstraktní datový typ -- stanovení hodnot a~operací modelujících potřebnou skutečnost
+\bod N. Wirth: Algoritmy + Datové struktury = Programy
+\bod prioritní jsou datové struktury, jsou modelem reality
+\end{itemize}
+\end{frame}
+
+\kap{Popis abstraktního typu}
+
+\begin{frame}[fragile]\frametitle{Popis abstraktního typu}
+\begin{itemize}
+\bod Popis hodnot (obecně, bez jakékoliv vazby na implementaci)
+\bod Popis syntaxe operací -- diagram signatury
+\bod Popis sémantiky operací -- vyjádření algoritmu
+\bod Ve všech částech popisu je potřebné co nejpřesněji vyjádřit modelované vlastnosti
+\bod Každý prvek popisu by měl mít jednoznačný způsob převodu do zvoleného implementačního jazyka
+\bod Převod do programovacího jazyka může mít více variant podle zvolených jazykových nástrojů (neobjektová/objektová implementace, moduly, rekurze/iterace apod.)
+\end{itemize}
+\end{frame}
+
+\pkap{Popis hodnot}
+\begin{frame}[fragile]\frametitle{Popis hodnot}
+\begin{itemize}
+\bod Obvykle jde o~neskalární hodnoty
+\bod Lze zvolit grafické prostředky, schémata, matematický formalismus
+\bod Příklad: Abstraktní typ zásobník
+\bod Hodnotou je posloupnost prvků, z~nichž jeden je význačný = vrchol zásobníku
+\bod Graficky lze vyjádřit jako sloupec pod sebe zapsaných prvků, prvek zcela nahoře je vrchol zásobníku
+\bod Matematicky lze vyjádřit jako posloupnost označenou různými typy závorek, například:
+$$\langle a_1, a_2, \dots, a_n]$$
+kde závorka $\langle$ představuje vrchol zásobníku, závorka $]$ pak dno zásobníku.
+\end{itemize}
+\end{frame}
+
+\pkap{Syntax operací}
+\begin{frame}[fragile]\frametitle{Popis syntaxe operací}
+\begin{itemize}
+\bod Pro vyjádření syntaxe operací se s~výhodou používá tzv.\,diagram signatury
+\bod Jde o~orientovaný graf
+\bod Uzly jsou dvojího druhu:
+   \begin{enumerate}
+   \item Datové typy -- znázorněny oválky, hlavní datový typ je zvýrazněn (tučná čára, dvojitá čára)
+   \item Operace -- plná kolečka
+   \end{enumerate}
+\bod Uzly jsou propojeny orientovanými hranami. Hrana spojuje vždy uzel typu s~uzlem operace
+\bod Hrana vedoucí směrem do uzlu operace = vstupní parametr
+\bod Hrana vedoucí směrem ven z~uzlu operace = výstupní parametr   
+\end{itemize}
+\end{frame}
+
+\pkap{Diagram signatury}
+\begin{frame}[fragile]\frametitle{Příklad diagramu signatury}
+\begin{itemize}
+\bod Abstraktní datový typ zásobník s~operacemi Init, Pop, Push, Empty
+\resizebox{.85\textwidth}{!}{\includegraphics{dszasob}}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Operace v~diagramu signatury}
+\begin{itemize}
+\bod Význačné operace: konstruktor, predikáty
+\bod Konstruktor (Init) -- vytváří počáteční hodnotu hlavního typu
+\bod V~diagramu signatury jde o~operaci s~výstupem hlavního typu, nemusí mít žádné vstupy
+\bod Predikát -- logická funkce, obvykle udává stav hlavního typu (Empty)
+\bod V~diagramu signatury je to operace se vstupem hlavního typu a~s~výstupem logického typu
+\end{itemize}
+\end{frame}
+
+\pkap{Sémantika operací}
+\begin{frame}[fragile]\frametitle{Sémantika operací}
+\begin{itemize}
+\bod Vyjádření algoritmu, který je danou operací realizován
+\bod Většinou jde o~přesný způsob zpracování vstupních hodnot na výstupní
+\bod Jednou z~možností vyjádření je popis možných vstupů a~jim odpovídajících výstupů
+\bod Hodnoty mohou být vyjádřeny stejným způsobem jako u~popisu hodnot typu
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Příklad sémantiky operací zásobníku}
+\begin{itemize}\itemsep -3pt
+\bod Operace Init: $$\Rightarrow \langle]$$
+\bod Operace Push:
+         $$x, \langle a_1, \dots, a_n] \Rightarrow \langle x, a_1, \dots, a_n]$$
+\bod Operace Pop:          
+         \begin{eqnarray*}
+          \langle a_1, a_2, \dots, a_n] &\Rightarrow& a_1, \langle a_2, \dots, a_n]\\
+          \langle] &\Rightarrow& \mbox{error}
+         \end{eqnarray*}
+\bod Operace Empty:         
+         \begin{eqnarray*}
+          \langle a_1, \dots, a_n] &\Rightarrow& \mbox{false}\\
+          \langle] &\Rightarrow& \mbox{true}
+         \end{eqnarray*}
+\end{itemize}
+\end{frame}
+
+\kap{Implementace abstraktního typu}
+\begin{frame}[fragile]\frametitle{Implementace abstraktního typu}
+\begin{itemize}
+\bod Volba implementačního jazyka
+\bod Implementace hodnot -- volba vhodné metody reprezentace pomocí konkrétních typů daného jazyka
+\bod Možnosti: strukturované datové typy, dynamické datové struktury, objekty
+\bod U~operací se vychází z~diagramu signatury
+\bod Většinou realizováno podprogramy, návrh systému parametrů, logická struktura
+\bod Volba implementačních nástrojů seskupujících podprogramy (moduly, objekty) 
+\end{itemize}
+\end{frame}
+
+\pkap{Příklad implementace zásobníku}
+\begin{frame}[fragile]\frametitle{Implementace zásobníku}
+\begin{itemize}
+\bod Hodnoty implementovány jako dynamický lineární seznam
+\bod Datové složky jsou určitého typu reprezentovaného identifikátorem \kod{Element}; pro příklad použití zvolíme \kod{\STRING}
+\bod Operace implementovány jako procedury a~funkce
+\bod Operace Pop nad prázdným zásobníkem vyvolá chybu, která je řešena procedurou \kod{Error}
+\bod Příklad použití: Na vstupu je řada řetězců, program má tuto řadu vypsat v~obráceném pořadí
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Implementace zásobníku}
+\begin{Verbatim}
+\TYPE 
+     Element = \STRING;
+     \kom{příklad datové složky}
+     PClen = ^Clen;
+     Clen = \RECORD
+       data: Element;
+       dalsi: PClen
+     \END;
+     Stack = PClen;
+     \kom{reprezentace hlavního typu}
+
+\PROCEDURE Init(var S: Stack);
+ \BEGIN S:=\NIL
+ \END;
+\end{Verbatim}
+\end{frame}
+     
+\begin{frame}[fragile]\frametitle{Implementace zásobníku}
+\begin{Verbatim}
+function Empty(S: Stack): boolean;
+ \BEGIN Empty:=S=\NIL;
+ \END;
+
+\PROCEDURE Push(\VAR S: Stack; D: Element);
+ \VAR Pom: PClen;
+ \BEGIN new(Pom);
+       Pom^.data:=D;
+       Pom^.dalsi:=S;
+       S:=Pom
+ \END;
+\end{Verbatim}
+\end{frame}
+     
+\begin{frame}[fragile]\frametitle{Implementace zásobníku}
+\begin{Verbatim}
+\PROCEDURE Pop(\VAR S: Stack; \VAR D: Element);
+ \VAR Pom: PClen;
+ \BEGIN \IF \NOT Empty(S) \THEN \BEGIN
+          Pom:=S;
+          D:=S^.data;
+          S:=S^.dalsi;
+          dispose(Pom)
+       \END \ELSE Error;
+ \END;
+\PROCEDURE Error;
+ \BEGIN \kom{řešení podle implementace}
+ \END;
+
+\end{Verbatim}
+\end{frame}
+
+     
+\begin{frame}[fragile]\frametitle{Implementace zásobníku}
+\begin{Verbatim}
+\VAR Z: Stack; \kom{použití}
+    R: \STRING;
+\BEGIN Init(Z);
+      \WHILE \NOT eof \DO \BEGIN
+      \kom{naplnění zásobníku řetězci}
+         readln(R);
+         Push(Z, R)
+      \END;
+      \WHILE \NOT Empty(Z) \DO \BEGIN
+      \kom{výpis celého zásobníku}
+         Pop(Z, R);
+         writeln(R)
+      \END
+\END.            
+\end{Verbatim}
+\end{frame}
+\end{document}

@@ -1,0 +1,21 @@
+\documentclass{article} 
+\usepackage{xltxtra,polyglossia} 
+\setdefaultlanguage{czech}
+\defaultfontfeatures{Mapping=tex-text}
+%\setmainfont{Lido STF}
+\begin{document}
+
+\catcode`\^^X=12
+
+\newcounter{cisprikl}
+\long\def\priklad#1#2{\par\noindent\refstepcounter{cisprikl}{\bfseries
+   Příklad \thecisprikl.} #1\par \if^^X#2^^X\else {\bfseries Řešení:}\\#2\fi}
+
+\priklad{Napište funkci, která z konce řetězce odstraní všechny mezery.}{}
+
+\priklad{Na standardním vstupu je na každém řádku jméno a příjmení zaměstnance
+(celkem 30 znaků) a číslo pracoviště (celočíselná hodnota nepřesahující 200).
+Vytvořte z těchto údajů soubor záznamů, jehož diskové jméno je uvedeno na 
+prvním řádku vstupních dat.}{}
+
+\end{document}

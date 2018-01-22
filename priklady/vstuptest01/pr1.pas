@@ -1,0 +1,27 @@
+{Vstup je tvořen souvislým textem zakončeným tečkou. Napište program, který
+ze vstupu vypustí všechny části uzavřené do složených závorek a výsledek
+vypíše na výstup.}
+
+var Z: char;
+    poznamka: boolean;
+begin poznamka:=false;
+      repeat
+        read(Z);
+        if Z='{' then poznamka:=true;
+        if not poznamka then write(Z);
+        if z='}' then poznamka:=false
+      until Z='.'
+end.
+
+{Alternativa s umožněným vnořením poznámek:}
+
+var Z: char;
+    poznamka: byte;
+begin poznamka:=0;
+      repeat
+        read(Z);
+        if Z='{' then Inc(poznamka);
+        if poznamka=0 then write(Z);
+        if Z='}' then Dec(poznamka)
+      until Z='.'
+end.              

@@ -1,0 +1,192 @@
+\documentclass[12pt,xetex,xcolor=svgnames]{beamer}
+\usepackage{slajdyptn}
+
+\begin{document}
+
+% \tisk
+\prez{JR}{Programovací techniky}{~}{Konkrétní datové typy -- opakování a~rozšíření}
+
+\kap{Datový typ}
+
+\begin{frame}[fragile]\frametitle{Datový typ}
+\begin{itemize}
+\bod Specifikace: množina povolených hodnot a~množina povolených operací
+\bod Konkrétní datový typ: typ implementovaný v~daném jazyce
+\bod Každý jazyk má jiný repertoár konkrétních typů
+\bod Datové typy pro stejný účel jsou v~různých jazycích různě implementovány
+\bod Jazyk Pascal: Datové typy jednoduché, strukturované, dynamické, objektové.
+\end{itemize}
+\end{frame}
+
+\kap{Jednoduché typy}
+\begin{frame}[fragile]\frametitle{Jednoduché typy}
+\begin{itemize}
+\bod V~jednom okamžiku uchovávají jednu hodnotu
+\bod Základní členění: ordinální, neordinální
+\bod Ordinální typy: jejich hodnoty jsou zobrazeny na vhodnou podmnožinu celých čísel (implementace)
+\bod Neordinální typy: racionální čísla (zobrazeny pomocí dvojic celých čísel -- mantisa, exponent)
+\bod Ordinální typy: celá čísla (integer -- základní ve všech verzích, rozšiřující jsou 
+shortint, smallint, longint, byte, word, longword, cardinal); boolean, char, interval, výčet.
+\end{itemize}
+\end{frame}
+
+\pkap{Ordinální typy}
+\begin{frame}[fragile]\frametitle{Ordinální typy}
+\begin{itemize}
+\bod Operace vyplývají ze zobrazení do množiny celých čísel
+\bod Základní: succ(X), pred(X), porovnání (6 operátorů)
+\bod Konverzní: ord(X), typ(I)
+\bod Rozšíření: Inc(X, [K]), Dec(X, [K])
+\end{itemize}
+\end{frame}
+ 
+\pkap{Bitové operace na celočíselných typech}
+\begin{frame}[fragile]\frametitle{Bitové operace}
+\begin{itemize}
+\bod Celá čísla: aritmetické vlastnosti, doplňkový kód
+\bod Logické vlastnosti: každý bit jako jedna logická hodnota
+\bod Rozšíření operátorů \AND, \OR, \NOT.
+\bod Příklady: \\
+      \begin{tabular}{ll}
+         5 \OR{} 9 = 13 & \NOT{} 255 = 0\\
+         5 \AND{} 9 = 1 & 5 \XOR{} 9 = 12
+      \end{tabular}   
+\bod Bitové posuvy: \SHR, \SHL
+\bod Posuv vlevo -- do nejnižšího bitu se vloží vždy nula
+\bod Posuv vpravo -- dva typy:\\
+      a) do nejvyššího bitu se vloží nula = \vyznac{logický posuv}\\
+      b) do nejvyššího bitu se zopakuje původní hodnota = \vyznac{aritmetický posuv}
+\end{itemize}
+\end{frame}
+
+\pkap{Využití bitových operací}
+\begin{frame}[fragile]\frametitle{Využití bitových operací}
+\begin{itemize}
+\bod Umístění více logických informací do minimálního prostoru \\
+1001 = archivní, ne systémový, ne read only, adresář
+\bod Maskování \\ \kod{X \AND{} 3} -- výběr nejnižších dvou bitů
+\bod Zjištění hodnot vybraných bitů -- příklady: zabezpečení paritou, šifrování\\
+kombinace \kod{odd(X)} a~posuvu vpravo
+\bod Násobení a~dělení hodnotou se základem 2\\
+násobení nahrazeno posuvem doleva, dělení posuvem doprava
+\end{itemize}
+\end{frame}
+
+\pkap{Znakový typ}
+\begin{frame}[fragile]\frametitle{Znakový typ}
+\begin{itemize}
+\bod Znakové hodnoty v~jednobytovém kódování
+\bod Zápis hodnot pomocí obrazů v~apostrofech nebo pomocí ordinálního čísla, např. \kod{\#10}
+\bod Operace: ordinální + UpCase
+\bod Historická funkce \kod{chr}
+\bod Znakový kód ASCII:\\ 
+\begin{center}\begin{tabular}{ll}
+řídicí znaky &000x xxxx,\\ mezera & 0010 0000\\
+číslice &0011 xxxx,\\ velká písmena &010x xxxx,\\ 
+malá písmena &011x xxxx,\\ národní znaky &1xxx xxxx
+\end{tabular}\end{center}
+\end{itemize}
+\end{frame}
+
+\pkap{Výčet. Interval}
+\begin{frame}[fragile]\frametitle{Typ výčet a~interval}
+\begin{itemize}
+\bod Výčet: Hodnotami jsou identifikátory
+\bod Implementace celými čísly počínaje nulou
+\bod Identifikátory představují pojmenované konstanty
+\bod Hlavní výhodou je zvýšení čitelnosti zdrojového textu
+\bod Nutnost uživatelských konverzí při textovém vstupu a~výstupu
+\bod Interval -- zúžení hodnot a~operací na podmnožinu jiného ordinálního typu
+\bod Určen ke kontrole rozsahů hodnot, při zapnutí kontrol překladače
+\end{itemize}
+\end{frame}
+
+
+\kap{Strukturované typy}
+\begin{frame}[fragile]\frametitle{Strukturované typy}
+\begin{itemize}
+\bod V~jednom okamžiku uchovávají více hodnot
+\bod Lze rozdělit na homogenní (složky stejného typu) a~heterogenní (složky různých typů)
+\bod \vyznac{Bázový typ} = typ složky
+\bod Základní operací je přístup ke složce
+\bod Paměťové typy lze přiřazovat
+\bod Specifické možnosti: řetězec, množina, soubor
+\end{itemize}
+\end{frame}
+
+\pkap{Pole}
+
+\begin{frame}[fragile]\frametitle{Pole}
+\begin{itemize}
+\bod Pole představuje nejbližší obraz operační paměti
+\bod Koncepce pole v~jazyce Pascal -- vždy statické, jednorozměrné
+\bod Složkou pole může být libovolný typ bez omezení
+\bod Přístup ke složce pomocí indexu
+\bod Indexový výraz: $$A=A_0+(I-I_0)\cdot V,$$
+   kde $A$ je výsledná adresa, $A_0$ je počáteční adresa pole,
+   $I$ je aktuální index, $I_0$ je index prvního prvku pole,
+   $V$ je velikost složky pole v~bytech.
+\bod Optimalizace indexového výrazu: \\
+      a) $I_0=0$,\\
+      b) $V=2^n$, příp. $V=1$
+\end{itemize}
+\end{frame}
+
+\pkap{Znakový řetězec}
+\begin{frame}[fragile]\frametitle{Znakový řetězec}
+\begin{itemize}
+\bod Implementován jako pole \kod{\ARRAY{} [0..L] \OF{} char}
+\bod První složka představuje okamžitou délku
+\bod Indexy od 1 do L reprezentují jednotlivé znaky
+\bod Deklarovaná délka L je max. 255
+\bod Odvozen od typu \kod{char} -- jednobytové kódování
+\bod Řada operací: okamžitá délka, porovnání, hledání, vkládání a~mazání podřetězce, zřetězení
+\end{itemize}
+\end{frame}
+
+\pkap{Záznam}
+
+\begin{frame}[fragile]\frametitle{Záznam}
+\begin{itemize}
+\bod Jediný heterogenní typ
+\bod Široké použití pro reprezentaci dat (databáze, dynamické struktury)
+\bod Přístup ke složce prostřednictvím tečkové notace
+\bod Usnadnění přístupu -- příkaz \kod{\WITH}
+\bod Variantní záznam -- některé složky mohou sdílet stejné místo v~paměti, používají se výlučně
+\bod Operace se záznamem jako celkem nejsou (jen přiřazení identických záznamů) 
+\end{itemize}
+\end{frame}
+
+\pkap{Množina}
+\begin{frame}[fragile]\frametitle{Množina}
+\begin{itemize}
+\bod Specifický typ jazyka Pascal
+\bod Implementována jako bitové pole
+\bod Prvek je indexem
+\bod Hodnota je bit v~poloze 0 -- nepřítomný prvek, 1 -- přítomný prvek
+\bod Bázovým typem je ordinální typ s~hodnotami v~intervalu ordinálních čísel 0 až 255
+\bod Free Pascal: dvě velikosti, 4B a~32B
+\bod Operace -- sjednocení, průnik, rozdíl, zjištění přítomnosti prvku
+\bod Užitečná pomůcka při přetypování
+\end{itemize}
+\end{frame}
+
+\pkap{Soubor}
+\begin{frame}[fragile]\frametitle{Soubor}
+\begin{itemize}
+\bod Jediný datový typ, jehož proměnné nejsou uloženy v~operační paměti
+\bod Veškeré manipulace jsou řešeny podprogramy -- jazykové rozhraní k~systémovým službám
+\bod Princip přístupu k~souboru -- buffer v~paměti
+\bod Rozdělení souborů -- textové, netextové; operace jsou rozdílné
+\bod Netextové soubory mohou nebo nemusí mít udán typ datové složky
+\bod Textové soubory mají čistě sekvenční charakter
+\bod Netextové soubory umožňují přímý přístup ke složkám, jde o~obdobu pole
+\bod Operace: Assign, reset, rewrite, read, readln, write, writeln, eof, eoln, Close, Seek, FilePos, FileSize
+\end{itemize}
+\end{frame}
+
+\end{document}
+\begin{frame}[fragile]\frametitle{}
+\begin{itemize}
+\end{itemize}
+\end{frame}

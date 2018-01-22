@@ -1,0 +1,178 @@
+\documentclass[12pt,xetex,xcolor=svgnames]{beamer}
+\usepackage{slajdyptn}
+
+\begin{document}
+
+% \tisk
+\prez{JR}{Programovací techniky}{~}{Časová a~prostorová složitost algoritmů}
+
+\kap{Hodnocení algoritmů}
+\begin{frame}[fragile]\frametitle{Hodnocení algoritmů}
+\begin{itemize}
+\bod Kromě základních vlastností lze hodnotit kvalitu algoritmů
+\bod Stejnou úlohu lze řešit různými přístupy
+\bod Rozdíl je zejména ve spotřebě klíčových zdrojů -- paměť, čas
+\bod Pojem složitosti -- \vyznac{funkce} závislosti na $N$
+\bod Znalost složitosti algoritmu je klíčová pro vhodnou aplikaci
+\end{itemize}
+\end{frame}
+
+\kap{Složitost}
+
+\begin{frame}[fragile]\frametitle{Pojem složitosti}
+\begin{itemize}
+\bod Pojem: matematická funkce představující závislost sledovaného parametru na množství vstupních dat
+\bod Složitost prostorová -- spotřeba paměti, diskového prostoru v~závislosti na vstupních datech
+\bod Složitost časová -- spotřeba času v~závislosti na vstupních datech
+\bod Časová složitost je obvykle kritičtější (prostor si lze koupit, čas nikoliv)
+\bod Třídy složitosti -- není podstatná konkrétní přesná závislost, stačí charakterizovat třídu
+\bod Sledujeme horní ohraničení $O(N)$
+\bod Zanedbáváme implementační konstanty
+\bod Vyjádření třídy -- jednoduchá matematická funkce
+\bod Třídy lze uspořádat
+\end{itemize}
+\end{frame}
+
+\pkap{Třídy složitosti}
+\begin{frame}[fragile]\frametitle{Třídy složitosti}
+\begin{itemize}
+\bod Ve vyjádření tříd je $k$ implementační konstanta, jejíž vliv na charakter algoritmu je nulový
+\bod Konstantní $O(N)=k$
+\bod Logaritmická $O(N)=k \log N$
+\bod Lineární $O(N)=k\cdot N$
+\bod Lineárně logaritmická $O(N)=k\cdot N\cdot\log N$
+\bod Kvadratická $O(N)=k\cdot N^2$
+\bod Kubická $O(N)=k\cdot N^3$
+\bod Exponenciální $O(N)=k \cdot Z^N$
+\bod Faktoriální $O(N)=k\cdot N!$
+\end{itemize}
+\end{frame}
+
+\kap{Složitost vs. Praktické testy}
+\begin{frame}[fragile]\frametitle{Složitost v~praxi}
+\begin{itemize}
+\bod Testovací množina dat je obvykle podstatně menší než reálná data
+\bod Program funguje s~malým množstvím dat výborně
+\bod Při nasazení do provozu nastávají \uv{nečekané} komplikace
+\bod \resizebox{.8\linewidth}{!}{\includegraphics{sloz.pdf}}
+\end{itemize}
+\end{frame}
+
+\pkap{Stanovení složitosti}
+\begin{frame}[fragile]\frametitle{Stanovení složitosti}
+\begin{itemize}
+\bod Metody -- experimentální, analytické
+\bod \vyznac{Experiment} -- vytvoření tabulky s~údaji, kde počet hodnot nezávisle proměnné stanovujeme podle vznikajícího charakteru algoritmu
+\bod Možnosti praktických měření jsou omezené (stanovení přesné spotřeby času, stanovení přesné spotřeby prostoru)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Stanovení složitosti}
+\begin{itemize}
+\bod \vyznac{Analýza algoritmu}
+\bod U~prostoru -- lokální statické proměnné, dynamické proměnné, rekurze
+\bod Alokace paměti v~cyklech, jejichž počet průchodů závisí na vstupních datech
+\bod Není potřeba sledovat globální statické proměnné
+\bod Časová složitost -- cykly a~rekurze závisející na vstupních datech
+\bod Vnoření cyklů -- násobení závislostí
+\bod Následné cykly -- započítáváme jen horší složitost
+\end{itemize}
+\end{frame}
+
+\pkap{Příklady}
+\begin{frame}[fragile]\frametitle{Příklady}
+\begin{itemize}
+\bod Hledání -- sekvenční hledání v~neuspořádané lineární struktuře (hledáme hodnotu C v~poli P, v~němž je naplněno N prvků)
+\bod Časová složitost odvozená z~algoritmu:
+\begin{Verbatim}
+I:=1;
+\WHILE (I<=N) \AND (P[I]<>C) 
+     \DO Inc(I);
+Nalezeno:=I<=N
+\end{Verbatim}
+\bod Cyklus při neúspěšném hledání (nejhorší případ) proběhne $N$-krát, složitost je tedy $O(N)=k\cdot N$ (lineární)
+\bod Uvažujme průměrně projití 75\,\% prvků pole, pak $O(N)=0{,}75\cdot k\cdot N = k_1\cdot N$
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Příklady}
+\begin{itemize}
+\bod Modifikovaný algoritmus sekvenčního hledání v~uspořádané struktuře:
+\begin{Verbatim}
+I:=1;
+\WHILE (I<=N) \AND (P[I]<C) 
+     \DO Inc(I);
+Nalezeno:=I<=N
+\end{Verbatim}
+\bod Má zcela \vyznac{stejnou složitost}, i~když neúspěšné hledání je detekováno dříve
+\bod Uvažujme průměrné projití 50\,\% prvků pole. Pak $O(N)=0{,}5\cdot k\cdot N = k_2\cdot N$
+\bod Zřejmě platí $k_1>k_2$, nemění se však \vyznac{charakter} algoritmu, ani časová složitost (třída)
+\bod Jedná se o~názornou ukázku velmi neefektivního použití algoritmu -- v~uspořádané struktuře je potřebné hledat v~jiné třídě složitosti
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Příklady}
+\begin{itemize}
+\bod Binární vyhledávací strom (implementace dynamickou strukturou):
+\begin{Verbatim}
+U:=Koren;
+\WHILE (U<>\NIL) \AND (U^.Data<>C)
+     \DO \IF C<U.Data \THEN U:=U^.Vlevo
+                    \ELSE U:=U^.Vpravo;
+Nalezeno:=U<>\NIL
+\end{Verbatim}
+\bod Cyklus závisí na vstupních datech, v~jeho těle proběhne rozhodnutí, do kterého podstromu se vydáme
+\bod Cyklus proběhne nejhůře tolikrát, kolik je hladin stromu
+\bod V~případě vyváženého stromu je počet hladin stromu o~$N$ prvcích roven $h=\log_2 N$
+\bod Časová složitost je tedy $O(N)=k\cdot \log_2 N$
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Příklady}
+\begin{itemize}
+\bod Součet řady čísel ze standardního vstupu -- prostorová složitost
+\bod Iterativní algoritmus:
+\begin{Verbatim}
+\VAR C, Soucet: real;
+\BEGIN Soucet:=0;
+      \WHILE \NOT SeekEof \DO \BEGIN
+         read(C);
+         Soucet:=Soucet+C
+      \END;
+      writeln(Soucet)
+\END.
+\end{Verbatim}
+\bod Cyklus neobsahuje alokaci paměti, prostorová složitost je tedy rovna $O(N)=k$ (konstantní)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Příklady}
+\begin{itemize}
+\bod Součet řady řešený rekurzivním algoritmem:
+\begin{Verbatim}
+\FUNCTION Soucet: real;
+ \VAR C: real;
+ \BEGIN \IF \NOT SeekEof \THEN \BEGIN
+          read(C);
+          Soucet:=C+Soucet
+       \ELSE Soucet:=0
+ \END;
+\BEGIN writeln(Soucet)
+\END.
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Příklady}
+\begin{itemize}
+\bod Rekurze vyvolaná v~hlavním programu je závislá na počtu vstupních dat 
+\bod S~každým zpracovaným číslem se volá funkce, na systémový zásobník se ukládá její návratová adresa a~lokální proměnná C
+\bod Prostorová složitost je lineární $O(N)=k\cdot N$
+\bod Jedná se o~ukázku neefektivního algoritmu
+\end{itemize}
+\end{frame}
+
+\end{document}

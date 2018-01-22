@@ -1,0 +1,189 @@
+\documentclass[12pt,xetex,xcolor=svgnames]{beamer}
+\usepackage{slajdyptn}
+
+\begin{document}
+
+% \tisk
+\prez{JR}{Programovací techniky}{~}{Vyhledávání}
+
+\kap{ADT Vyhledávací tabulka}
+
+\begin{frame}[fragile]\frametitle{Princip vyhledávání}
+\begin{itemize}
+\bod Jedna z~nejfrekventovanějších úloh
+\bod Uložení dat a~jejich efektivní vyhledání
+\bod Lze využít prakticky jakoukoliv strukturu
+\bod Důležitá je efektivnost v~dané aplikaci
+\bod Datová složka + klíč (jednoduchý typ, řetězec)
+\bod Ideální případ: Klíč je jednoznačný v~rámci dané struktury
+\bod Datové složky se stejným klíčem = synonyma
+\bod Co nejrychlejší přístup ke složkám -- záznamům
+\end{itemize}
+\end{frame}
+
+
+\kap{Možnosti realizace}
+\begin{frame}[fragile]\frametitle{Realizace vyhledávání}
+\begin{itemize}
+\bod Lineární struktury, nelineární struktury
+\bod Soubory: sekvenční přístup; uspořádané soubory: sekvenční přístup, půlení intervalu
+\bod Lineární seznamy: sekvenční přístup; uspořádané seznamy: sekvenční přístup
+\bod Stromy: stromový průchod; usp. stromy: stromové hledání
+\bod Pole: sekvenční přístup; usp. pole: sekvenční přístup, indexace
+\bod Dělení podle časové složitosti: lineární, logaritmické, konstantní hledání
+\end{itemize}
+\end{frame}
+
+\kap{Lineární metody}
+\pkap{Sekvenční hledání}
+\begin{frame}[fragile]\frametitle{Sekvenční hledání}
+\begin{itemize}
+\bod Časová složitost lineární = nejhorší
+\bod Všude dále v~příkladech platí: pole P, s~N složkami, rozměr pole může být $M\geq N$
+\bod Sekvenční hledání:
+\begin{Verbatim}
+I:=1;
+\WHILE (I<=N) \AND (C<>P[I]) \DO inc(I);
+Nalezeno:=I<=N;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\pkap{Sekvenční hledání se zarážkou}
+\begin{frame}[fragile]\frametitle{Sekvenční hledání se zarážkou}
+\begin{itemize}
+\bod Časová složitost stejná jako u~předchozí metody
+\bod Na zarážku musí být volné místo
+\bod Vložení zarážky s~konstantní složitostí
+\begin{Verbatim}
+I:=1; P[N+1]:=C;
+\WHILE C<>P[I] \DO inc(I);
+Nalezeno:=I<=N;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\pkap{Sekvenční hledání ve vzestupně uspořádaném poli:}
+\begin{frame}[fragile]\frametitle{Sekvenční hledání v~uspořádaném poli}
+\begin{itemize}
+\bod Časová složitost opět lineární = nejhorší
+\bod Velké plýtvání -- nevyužívá se seřazené struktury
+\begin{Verbatim}
+I:=1;
+\WHILE (I<=N) \AND (C>P[I]) \DO inc(I);
+Nalezeno:=(I<=N) \AND (C=P[I]);
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\kap{Logaritmické metody}
+\pkap{Půlení intervalu}
+\begin{frame}[fragile]\frametitle{Půlení intervalu}
+\begin{itemize}
+\bod Rozmezí prvků pole se rozdělí na poloviny
+\bod U~středového prvku provedeme porovnání s~hledanou hodnotou
+\bod Na základě testu pak stejným způsobem pracujeme s~levou, nebo s~pravou polovinou 
+daného rozmezí
+\bod Konec neúspěšného hledání: rozmezí prvků je tvořeno jediným prvkem
+\end{itemize}
+\end{frame}
+
+\pkap{Stromové hledání:}
+\begin{frame}[fragile]\frametitle{Binární strom}
+\begin{itemize}
+\bod Binární vyhledávací strom, uspořádání: ls$<=$o$<$ps
+\bod Implementace dynamickou strukturou:
+\begin{Verbatim}
+pom:=koren;
+\WHILE (pom<>\NIL) \AND (pom^.klic<>C) \DO
+   \IF pom^.klic<C \THEN pom:=Pom^.ps
+                  \ELSE pom:=pom^.ls;
+Nalezeno:=Pom<>nil;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\kap{Indexace}
+\begin{frame}[fragile]\frametitle{Indexace}
+\begin{itemize}
+\bod Nejrychlejší možná metoda vyhledání
+\bod Silné omezení na datové hodnoty
+\bod Implementace množinou
+\bod Implementace logickým polem
+\bod Implementace celočíselným polem
+\end{itemize}
+\end{frame}
+
+\kap{Tabulka s~rozptýlenými hesly}
+
+\begin{frame}[fragile]\frametitle{Hashovací tabulka}
+\begin{itemize}
+\bod Kombinace indexace a~sekvenčního hledání
+\bod Jednoduchá implementace
+\bod Rozptylování: funkce pracující v~konstantním čase
+\bod Omezení počtu synonym: konstantní složitost, jinak lineární
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Hashovací tabulka}
+\footnotesize
+\begin{Verbatim}
+\CONST Max=211;
+\TYPE TypKlic = longint;
+     Indexy = 1..Max;
+     Data = \RECORD
+       Klic: TypKlic;
+       Udaje: pointer;
+     \END;
+     UkClen = ^Clen;
+     Clen = \RECORD
+       D: Data;
+       N: UkClen;
+     \END;
+     ZaklPole = \ARRAY [Indexy] \OF UkClen;
+     HashTable = ^ZaklPole;
+\end{Verbatim}
+\end{frame}
+ 
+\begin{frame}[fragile]\frametitle{Hashovací tabulka}
+\begin{Verbatim}
+\FUNCTION Hash(K: TypKlic): Indexy;
+ \BEGIN Hash:=K \MOD Max + 1;
+ \END;
+
+\PROCEDURE Init(\VAR H: HashTable);
+ \VAR I:Indexy;
+ \BEGIN new(H);
+       \FOR I:=1 \TO Max \DO H^[I]:=\NIL;
+ \END;
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Hashovací tabulka}
+\begin{Verbatim}
+\PROCEDURE HVloz(\VAR H:HashTable; El: Data);
+ \VAR I:Indexy; Pom: UkClen;
+ \BEGIN I:=Hash(El.Klic);
+       new(pom);
+       Pom^.D:=El;
+       Pom^.N:=H^[I];
+       H^[I]:=Pom;
+ \END;
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Hashovací tabulka}
+\begin{Verbatim}
+\FUNCTION HHledej(H: HashTable; 
+                K: TypKlic): UkClen;
+ \VAR I: Indexy; Pom: UkClen;
+ \BEGIN I:=Hash(K);
+       Pom:=H^[I];
+       \WHILE (Pom<>nil) \AND (Pom^.D.Klic<>K) 
+           \DO Pom:=Pom^.N;
+       HHledej:=Pom
+ \END;
+\end{Verbatim}
+\end{frame}
+
+\end{document}

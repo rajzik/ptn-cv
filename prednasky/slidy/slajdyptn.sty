@@ -1,0 +1,381 @@
+%%%%%%%%%%%%%%%%%%%% POTŘEBNÉ FONTY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Dynamo Grotesk (základní písmo)
+% Consolas (neproporcionální)
+%
+%%%%%%%%%%%%%%%%%%%% POTŘEBNÉ BALÍČKY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{mathspec}                                                   % Dynamo v matematice
+\usepackage{xltxtra}
+\usepackage[czech]{babel}
+\usepackage{pgf,pgfpages}
+\usepackage{graphicx}
+\usepackage{dsfont}                                                     % číselné množiny \mathds{...}
+\usepackage{mflogo}                                                     % logo METAFONT
+\usepackage{fancyvrb}                                                   % hezké zdrojáky
+
+%%%%%%%%%%%%%%%%%%%% NASTAVENÍ TÉMAT PREZENTACE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usetheme[hideothersubsections]{Hannover}                               % skrývání neaktuálních kapitol
+\usecolortheme{beaver}                                                  % použitý základ barevného schématu
+\usefonttheme[onlylarge]{structurebold}                                 % tučně pouze výrazné prvky
+\useinnertheme{rounded}                                                 % obyčejné puntíky ve výčtech a seznamech
+\useoutertheme{sidebar}                                                 % používáme sidebar
+
+%%%%%%%%%%%%%%%%%%%% ÚPRAVY VZHLEDU %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{itemize item}[circle]
+\setbeamertemplate{enumerate item}[circle]
+\setbeamertemplate{itemize subitem}{---}
+\setbeamertemplate{sections/subsections in toc}[ball unnumbered]
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{%
+  \begin{beamercolorbox}[wd=\textwidth,leftskip=1em,rightskip=1em]{footline}%
+    \rule[-3pt]{0pt}{10pt}%
+    \parbox{.33\textwidth}{\csname predmet\endcsname}%
+    \parbox{.33\textwidth}{\centering \csname tema\endcsname}%
+    \hfill \insertframenumber\,/\,\inserttotalframenumber%
+  \end{beamercolorbox}%
+}
+
+%%%%%%%%%%%%%%%%%%%% ÚPRAVY PŘEDDEFINOVANÝCH BAREV %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\pauza{\pause}
+\definecolor{sbtext}{rgb}{1,1,1}
+\setbeamercolor{footline}{fg=white,bg=black}
+\setbeamercolor{sidebar left}{fg=white,bg=blue!40!black}
+\setbeamercolor{section in sidebar}{fg=white,bg=blue!70!white}
+\setbeamercolor{section in sidebar shaded}{fg=white}
+\setbeamercolor{subsection in sidebar}{parent=section in sidebar}
+\setbeamercolor{subsection in sidebar shaded}{fg=white}
+\setbeamercolor{frametitle}{fg=white,bg=red!35!black}
+\setbeamercolor{itemize item}{fg=blue!40!black}
+\setbeamercolor{itemize subitem}{fg=blue!40!black}
+\setbeamercolor{itemize subsubitem}{fg=blue!40!black}
+\setbeamercolor{enumerate item}{fg=blue!40!black}
+\setbeamercolor{enumerate subitem}{fg=blue!40!black}
+\setbeamercolor{enumerate subsubitem}{fg=blue!40!black}
+\setbeamercolor{item}{fg=blue!40!black}
+\setbeamercolor{alerted text}{fg=red!35!black}
+\setbeamercolor{normal text}{fg=black,bg=gray!20!white}
+\setbeamercolor{titlelike}{fg=white,bg=blue!40!black}
+\setbeamercolor{muj text}{fg=red}%
+\setbeamercolor{block title}{use=structure,fg=white,bg=structure.fg!5!blue}
+\setbeamercolor{block title alerted}{use=muj text,fg=white,bg=muj text.fg!75!black}
+\setbeamercolor{block title example}{use=example text,fg=white,bg=example text.fg!75!black}
+\setbeamercolor{block body}{bg=gray!40!white}
+\setbeamercolor{block body alerted}{bg=gray!40!white}
+\setbeamercolor{block body example}{bg=gray!40!white}
+\definecolor{a}{rgb}{1,.4,.4}   % cervena
+\definecolor{b}{rgb}{1,1,0}     % zluta
+\definecolor{c}{rgb}{.3,.5,1}   % tmave modra
+\definecolor{d}{rgb}{1,.6,.4}   % oranzova
+\definecolor{e}{rgb}{.5,.7,.7}  % sedomodra
+\definecolor{f}{rgb}{.3,1,.3}   % zelena
+\definecolor{g}{rgb}{1,.3,.4}   % ruzova
+\definecolor{h}{rgb}{0,1,1}     % svetle modra
+\definecolor{i}{rgb}{1,1,1}     % bila
+\definecolor{j}{rgb}{0,0,0}     % cerna
+\definecolor{z}{rgb}{0,.5,0}     % obycejna zelena
+
+
+%%%%%%%%%%%%%%%%%%%% VARIANTA PRO TISK %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\tisk{%
+  \pgfpagesuselayout{4 on 1}[border shrink=4mm]
+  \def\pauza{}
+  \definecolor{sbtext}{rgb}{0,0,0}
+  \setbeamercolor{frametitle}{fg=black,bg=gray!70!white}
+  \setbeamercolor{footline}{fg=black,bg=gray!70!white}
+  \setbeamercolor{sidebar left}{fg=black,bg=gray!70!white}
+  \setbeamercolor{section in sidebar}{fg=black,bg=gray!70!white}
+  \setbeamercolor{section in sidebar shaded}{fg=black}
+  \setbeamercolor{subsection in sidebar}{parent=section in sidebar}
+  \setbeamercolor{subsection in sidebar shaded}{fg=black}
+  \setbeamercolor{itemize item}{fg=black}
+  \setbeamercolor{itemize subitem}{fg=black}
+  \setbeamercolor{itemize subsubitem}{fg=black}
+  \setbeamercolor{enumerate item}{fg=black}
+  \setbeamercolor{enumerate subitem}{fg=black}
+  \setbeamercolor{enumerate subsubitem}{fg=black}
+  \setbeamercolor{item}{fg=black}
+  \setbeamercolor{alerted text}{fg=black}
+  \setbeamercolor{normal text}{fg=black,bg=white}
+  \setbeamercolor{titlelike}{fg=white,bg=black}
+  \setbeamercolor{block title}{bg=gray!70!white,fg=black}
+  \setbeamercolor{block title alerted}{bg=gray!70!white,fg=black}
+  \setbeamercolor{block title example}{bg=gray!70!white,fg=black}
+  \setbeamercolor{block body}{bg=gray!25!white}
+  \setbeamercolor{block body alerted}{bg=gray!25!white}
+  \setbeamercolor{block body example}{bg=gray!25!white}
+  \definecolor{a}{rgb}{0,0,0}   % cerna
+  \definecolor{b}{rgb}{0,0,0}   % cerna
+  \definecolor{c}{rgb}{0,0,0}   % cerna
+  \definecolor{d}{rgb}{0,0,0}   % cerna
+  \definecolor{e}{rgb}{0,0,0}   % cerna
+  \definecolor{f}{rgb}{0,0,0}   % cerna
+  \definecolor{g}{rgb}{0,0,0}   % cerna
+  \definecolor{h}{rgb}{0,0,0}   % cerna
+  \definecolor{i}{rgb}{0,0,0}   % cerna
+  \definecolor{j}{rgb}{0,0,0}   % cerna
+  \definecolor{z}{rgb}{0,0,0}   % cerna
+
+}
+
+%%%%%%%%%%%%%%%%%%%% FONTY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\defaultfontfeatures{Mapping=tex-text}
+\setmainfont{DynaGrotesk R}
+\setmonofont[Scale=.8]{Courier New}
+\setsansfont{DynaGrotesk R}
+
+%%%%%%%%%%%%%%%%%%%% PŘEDNÁŠEJÍCÍ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\PH{%
+ \gdef\jmeno{Ing.\,Pavel Haluza}%
+ \gdef\mail{pavel.haluza@mendelu.cz}%
+ \gdef\prac{ústav informatiky\\PEF MENDELU v Brně}%
+}
+\def\JR{%
+ \gdef\jmeno{doc.\,Ing.\,Jiří Rybička,\,Dr.}%
+ \gdef\mail{rybicka@mendelu.cz}%
+ \gdef\prac{ústav informatiky\\PEF MENDELU v Brně}%
+}
+\def\DD{%
+ \gdef\jmeno{Ing.\,Dita Dlabolová}%
+ \gdef\mail{dita.dlabolova@mendelu.cz}%
+ \gdef\prac{ústav informatiky\\PEF MENDELU v Brně}%
+}
+\def\SZ{%
+ \gdef\jmeno{Bc.\,Stratos Zerdaloglu}%
+ \gdef\mail{stratos.zerdaloglu@mendelu.cz}%
+ \gdef\prac{ústav informačních technologií\\MENDELU v Brně}%
+}
+
+\def\opvk{\\\resizebox{.8\textwidth}{!}{\includegraphics{opvk_slajdy}}\\Tato 
+studijní opora je výstupem projektu spolufinancovaného \\z~Evropského sociálního 
+fondu a~státního rozpočtu České republiky}
+\def\opvk{}%již nezobrazováno
+
+%%%%%%%%%%%%%%%%%%%% PŘÍPRAVA TITULNÍHO SNÍMKU %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\vyblijtitul{\frame[plain]{\titlepage}}
+\def\pripravtitul{%
+  \def\sbautor{
+%     \color{sbtext}
+%     \vspace*{-2.5em}
+%     \scalebox{0.8}{\textbf{Přednáška \cislo:}} \\*[3pt]
+%     \textbf{\vphantom{Čý}\tema} \\*[5pt]
+%     \hrule
+  }
+  \author[\sbautor]{\textbf{\predmet}}
+  \title[]{\tema}
+  \institute[]{\jmeno\\\prac\\\texttt{\mail}\opvk}
+  \date{}
+  \vyblijtitul
+}
+\def\prez#1#2#3#4{%
+ \csname#1\endcsname
+ \gdef\predmet{#2}
+ \gdef\cislo{#3}
+ \gdef\tema{#4}
+ \pripravtitul
+}
+
+%%%%%%%%%%%%%%%%%%%% STRUKTURA PREZENTACE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newenvironment{snimek}[1]{\begin{frame}[fragile] \frametitle{#1}}{\end{frame}}
+\def\slajd#1{\begin{frame}[t] \frametitle{#1}}
+\def\endslajd{\end{frame}}
+\def\bod{\pause\item}
+\def\titul#1{\frametitle{#1}}
+\def\kap#1{\section{#1}}
+\def\pkap#1{\subsection{#1}}
+\def\ppkap#1{\subsubsection{#1}}
+
+%%%%%%%%%%%%%%%%%%%% VYZNAČOVÁNÍ POJMŮ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\vyznac#1{\alert{\bfseries #1}}
+\def\barva#1#2{{\color{#1} #2}}
+
+%%%%%%%%%%%%%%%%%%%% DALŠÍ NEZBYTNÉ REKVIZITY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\uv#1{„#1“}
+\def\pole#1#2{{\def\arraystretch{.95}\begin{tabular}{@{}#1@{}}#2\end{tabular}}}
+\def\:{\kern.1em} % kvůli G' apod.
+
+\font\fkap="DynaGrotesk R:weight=200;optical size=8" at 8pt
+\def\caps#1#2,{#1{\fkap\uppercase{#2}},}
+
+%%%%%%%%%%%%%%%%%%%% SPRÁVNÁ ČÁRKA V MATEMATICE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \catcode`\,=\active
+% \def,{\ifmmode\mathpunct{\mbox{\symbol{44}}}\else\symbol{44}{}\fi}
+\def\ldots{\ifmmode\mbox{\dots}\else\dots\fi}
+
+%%%%%%%%%%%%%%%%%%%% DEFAULTNÍ NASTAVENÍ ŠABLONY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \setbeamercolor{normal text}{fg=black,bg=white}
+% \setbeamercolor{alerted text}{fg=red}
+% \setbeamercolor{example text}{fg=green!50!black}
+% \setbeamercolor{structure}{fg=beamer@blendedblue}
+% \setbeamercolor{background canvas}{parent=normal text}
+% \setbeamercolor{background}{parent=background canvas}
+% \setbeamercolor{palette primary}{use=structure,fg=structure.fg}
+% \setbeamercolor{palette secondary}{use=structure,fg=structure.fg!75!black}
+% \setbeamercolor{palette tertiary}{use=structure,fg=structure.fg!50!black}
+% \setbeamercolor{palette quaternary}{fg=black}
+% \setbeamercolor{palette sidebar primary}{use=normal text,fg=normal text.fg}
+% \setbeamercolor{palette sidebar secondary}{use=structure,fg=structure.fg}
+% \setbeamercolor{palette sidebar tertiary}{use=normal text,fg=normal text.fg}
+% \setbeamercolor{palette sidebar quaternary}{use=structure,fg=structure.fg}
+% \setbeamercolor{math text}{}
+% \setbeamercolor{math text inlined}{parent=math text}
+% \setbeamercolor{math text displayed}{parent=math text}
+% \setbeamercolor{normal text in math text}{}
+% \setbeamercolor{local structure}{parent=structure}
+% \setbeamercolor{titlelike}{parent=structure}
+% \setbeamercolor{title}{parent=titlelike}
+% \setbeamercolor{title in head/foot}{parent=palette quaternary}
+% \setbeamercolor{title in sidebar}{parent=palette sidebar quaternary}
+% \setbeamercolor{subtitle}{parent=title}
+% \setbeamercolor{author}{}
+% \setbeamercolor{author in head/foot}{parent=palette primary}
+% \setbeamercolor{author in sidebar}{use=palette sidebar tertiary,fg=palette sidebar tertiary.fg}
+% \setbeamercolor{institute}{}
+% \setbeamercolor{institute in head/foot}{parent=palette tertiary}
+% \setbeamercolor{institute in sidebar}{use=palette sidebar tertiary,fg=palette sidebar tertiary.fg}
+% \setbeamercolor{date}{}
+% \setbeamercolor{date in head/foot}{parent=palette secondary}
+% \setbeamercolor{date in sidebar}{use=palette sidebar tertiary,fg=palette sidebar tertiary.fg}
+% \setbeamercolor{titlegraphic}{}
+% \setbeamercolor{part name}{}
+% \setbeamercolor{part title}{parent=titlelike}
+% \setbeamercolor{section in toc}{parent=structure}
+% \setbeamercolor{section in toc shaded}{parent=section in toc}
+% \setbeamercolor{section in head/foot}{parent=palette tertiary}
+% \setbeamercolor{section in sidebar}{parent=palette sidebar secondary}
+% \setbeamercolor{section in sidebar shaded}{use=section in sidebar,fg=section in sidebar.fg!40!bg}
+% \setbeamercolor{section number projected}{parent=item projected}
+% \setbeamercolor{subsection in toc}{}
+% \setbeamercolor{subsection in toc shaded}{parent=subsection in toc}
+% \setbeamercolor{subsection in head/foot}{parent=palette secondary}
+% \setbeamercolor{subsection in sidebar}{parent=palette sidebar primary}
+% \setbeamercolor{subsection in sidebar shaded}{use=subsection in sidebar,fg=subsection in sidebar.fg!40!bg}
+% \setbeamercolor{subsection number projected}{parent={subitem projected}}
+% \setbeamercolor{subsubsection in toc}{parent=subsection in toc}
+% \setbeamercolor{subsubsection in toc shaded}{parent=subsubsection in toc}
+% \setbeamercolor{subsubsection in head/foot}{parent=subsection in head/foot}
+% \setbeamercolor{subsubsection in sidebar}{parent=subsection in sidebar}
+% \setbeamercolor{subsubsection in sidebar shaded}{parent=subsection in sidebar shaded}
+% \setbeamercolor{subsubsection number projected}{parent=subsubitem projected}
+% \setbeamercolor{headline}{}
+% \setbeamercolor{footline}{}
+% \setbeamercolor{sidebar}{}
+% \setbeamercolor{sidebar left}{parent=sidebar}
+% \setbeamercolor{sidebar right}{parent=sidebar}
+% \setbeamercolor{logo}{parent=palette secondary}
+% \setbeamercolor{frametitle}{parent=titlelike}
+% \setbeamercolor{framesubtitle}{parent=frametitle}
+% \setbeamercolor{frametitle right}{parent=frametitle}
+% \setbeamercolor{caption}{}
+% \setbeamercolor{caption name}{parent=structure}
+% \setbeamercolor{button}{use=local structure,bg=local structure.fg!50!bg,fg=white}
+% \setbeamercolor{button border}{use=button,fg=button.bg}
+% \setbeamercolor{navigation symbols}{use=structure,fg=structure.fg!40!bg}
+% \setbeamercolor{navigation symbols dimmed}{use=structure,fg=structure.fg!20!bg}
+% \setbeamercolor{mini frame}{parent=section in head/foot}
+% \setbeamercolor{block body}{}
+% \setbeamercolor{block body alerted}{}
+% \setbeamercolor{block body example}{}
+% \setbeamercolor{block title}{parent=structure}
+% \setbeamercolor{block title alerted}{parent=alerted text}
+% \setbeamercolor{block title example}{parent=example text}
+% \setbeamercolor{item}{parent=local structure}
+% \setbeamercolor{subitem}{parent=item}
+% \setbeamercolor{subsubitem}{parent=subitem}
+% \setbeamercolor{item projected}{parent=item,use=item,fg=white,bg=item.fg}
+% \setbeamercolor{subitem projected}{parent=item projected}
+% \setbeamercolor{subsubitem projected}{parent=subitem projected}
+% \setbeamercolor{enumerate item}{parent=item}
+% \setbeamercolor{enumerate subitem}{parent=subitem}
+% \setbeamercolor{enumerate subsubitem}{parent=subsubitem}
+% \setbeamercolor{itemize item}{parent=item}
+% \setbeamercolor{itemize subitem}{parent=subitem}
+% \setbeamercolor{itemize subsubitem}{parent=subsubitem}
+% \setbeamercolor{itemize/enumerate body}{}
+% \setbeamercolor{itemize/enumerate subbody}{}
+% \setbeamercolor{itemize/enumerate subsubbody}{}
+% \setbeamercolor{description item}{parent=item}
+% \setbeamercolor{bibliography item}{parent=item}
+% \setbeamercolor{bibliography entry author}{use=structure,fg=structure.fg}
+% \setbeamercolor{bibliography entry title}{use=normal text,fg=normal text.fg}
+% \setbeamercolor{bibliography entry location}{use=structure,fg=structure.fg!65!bg}
+% \setbeamercolor{bibliography entry note}{use=structure,fg=structure.fg!65!bg}
+% \setbeamercolor{separation line}{}
+% \setbeamercolor{upper separation line head}{parent=separation line}
+% \setbeamercolor{middle separation line head}{parent=separation line}
+% \setbeamercolor{lower separation line head}{parent=separation line}
+% \setbeamercolor{upper separation line foot}{parent=separation line}
+% \setbeamercolor{middle separation line foot}{parent=separation line}
+% \setbeamercolor{lower separation line foot}{parent=separation line}
+% \setbeamercolor{abstract}{}
+% \setbeamercolor{abstract title}{parent=structure}
+% \setbeamercolor{verse}{}
+% \setbeamercolor{quotation}{}
+% \setbeamercolor{quote}{parent=quotation}
+% \setbeamercolor{page number in head/foot}{fg=fg!50!bg}
+% \setbeamercolor{qed symbol}{parent=structure}
+
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Sazba zdrojáků
+
+\fvset{numbers=none,numbersep=6pt,xleftmargin=\parindent,
+    codes={\catcode`\~=10},
+    frame=leftline,framerule=1pt,rulecolor=\color{komentclr},framesep=6pt,
+    samepage=false,commandchars=\\\{\}}
+
+\definecolor{komentclr}{cmyk}{1,0,0,0}
+\definecolor{kwclr}{cmyk}{1,1,0,0.3}
+%\definecolor{kwclr}{gray}{0}
+\definecolor{komentclr}{gray}{0.4}
+
+\def\kom#1{{}{\color{komentclr}\char123\relax#1\char125}}
+\def\kw#1{\textbf{\color{kwclr}#1}}
+
+\def\BEGIN{\kw{begin}}
+\def\END{\kw{end}}
+\def\PROCEDURE{\kw{procedure}}
+\def\FUNCTION{\kw{function}}
+\def\CONST{\kw{const}}
+\def\TYPE{\kw{type}}
+\def\VAR{\kw{var}}
+\def\IF{\kw{if}}
+\def\THEN{\kw{then}}
+\def\ELSE{\kw{else}}
+\def\WHILE{\kw{while}}
+\def\DO{\kw{do}}
+\def\REPEAT{\kw{repeat}}
+\def\UNTIL{\kw{until}}
+\def\FOR{\kw{for}}
+\def\TO{\kw{to}}
+\def\DOWNTO{\kw{downto}}
+\def\CASE{\kw{case}}
+\def\OF{\kw{of}}
+\def\WITH{\kw{with}}
+\def\ARRAY{\kw{array}}
+\def\STRING{\kw{string}}
+\def\RECORD{\kw{record}}
+\def\FILE{\kw{file}}
+\def\SET{\kw{set}}
+\def\AND{\kw{and}}
+\def\OR{\kw{or}}
+\def\XOR{\kw{xor}}
+\def\NOT{\kw{not}}
+\def\SHL{\kw{shl}}
+\def\SHR{\kw{shr}}
+\def\DIV{\kw{div}}
+\def\MOD{\kw{mod}}
+\def\IN{\kw{in}}
+\def\NIL{\kw{nil}}
+\def\OBJECT{\kw{object}}
+\def\VIRTUAL{\kw{virtual}}
+\def\FORWARD{\kw{forward}}
+\def\CONSTRUCTOR{\kw{constructor}}
+\def\DESTRUCTOR{\kw{destructor}}
+\def\PRIVATE{\kw{private}}
+\def\PROTECTED{\kw{protected}}
+\def\PUBLIC{\kw{public}}
+\def\PROGRAM{\kw{program}}
+\def\UNIT{\kw{unit}}
+\def\USES{\kw{uses}}
+\def\INTERFACE{\kw{interface}}
+\def\IMPLEMENTATION{\kw{implementation}}
+
+\def\kod#1{\texttt{#1}}

@@ -1,0 +1,245 @@
+\documentclass[12pt,xetex,xcolor=svgnames]{beamer}
+\usepackage{slajdyptn}
+
+\begin{document}
+
+% \tisk
+\prez{JR}{Programovací techniky}{~}{O rekurzi. Typické ATD. Domácí úloha}
+
+\kap{Iterace a~rekurze}
+
+\begin{frame}[fragile]\frametitle{Iterace}
+\begin{itemize}
+\bod Definice iterativní úlohy
+\bod Vstup: řada čísel, výstup: součet vstupní řady.
+
+$$S = a_1 + a_2 + \dots +a_N$$
+\bod Řešení vede na použití cyklu:
+\begin{Verbatim}
+S:=0;
+\WHILE \kom{není konec dat} \DO \BEGIN
+   \kom{získej hodnotu a}
+   S:=S+a
+\END;
+\end{Verbatim}
+\bod Spotřeba paměti nezávisí na počtu vstupních dat
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Rekurze}
+\begin{itemize}
+\bod Jiný způsob zadání téže úlohy:
+\begin{eqnarray*}
+S_i &=& S_{i-1} + a_i\\
+S_0 &=& 0
+\end{eqnarray*}
+\bod Řešení vede na rekurzivní podprogram:
+\begin{Verbatim}
+\FUNCTION S:real;
+ \VAR a: real;
+ \BEGIN \IF \kom{není konec dat} \THEN \BEGIN
+           read(a);
+           S:=S+a
+       \END \ELSE S:=0
+ \END;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Vlastnosti rekurze}
+\begin{itemize}
+\bod Volání podprogramu -- použití systémového zásobníku (návratové adresy, parametry volané hodnotou, lokální proměnné)
+\bod Spotřeba paměti -- závisí na počtu dat
+\bod Jiná úloha -- obrácení posloupnosti vstupních řetězců:
+{\small
+\begin{Verbatim}
+\PROCEDURE Obrat;
+ \VAR X: \STRING;
+ \BEGIN \IF \NOT eof \DO \BEGIN
+          readln(X);
+          Obrat
+       \END;
+       writeln(X)
+ \END;
+\end{Verbatim}
+}
+\bod Objasnění činnosti -- trasování a~vykreslení stavu paměti
+\end{itemize}
+\end{frame}
+
+\kap{Význačné abstraktní datové typy}
+
+\begin{frame}[fragile]\frametitle{Význačné abstraktní datové typy}
+\begin{itemize}
+\bod Seznam
+\begin{itemize}
+  \bod Fronta (Prioritní fronta)
+  \bod Zásobník
+\end{itemize}
+\bod Stromové struktury
+\bod Vyhledávací tabulka
+\bod Graf
+\bod Řídké pole
+\end{itemize}
+\end{frame}
+
+
+\pkap{Stromy}
+
+\begin{frame}[fragile]\frametitle{Stromy}
+\begin{itemize}
+\bod nepravidelné
+\bod pravidelné
+\begin{itemize}
+  \bod n-ární
+  \bod ternární
+  \bod binární
+  \bod binární uspořádané
+\end{itemize}
+\bod \vyznac{Operace:}
+\begin{itemize}
+\bod Inicializace
+\bod Vložení do stromu
+\bod Zjištění prázdnosti
+\bod Zjištění přítomnosti prvku
+\bod Průchod stromem -- výpis prvků do lineární struktury
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\pkap{Implementace stromu}
+
+\begin{frame}[fragile]\frametitle{Implementace stromu}
+\begin{itemize}
+\bod B-strom (speciální binární strom s~nejvýše 2 následníky uzlů)
+\bod Datové prvky:
+\begin{Verbatim}
+\TYPE TypData = longint;
+
+     UkUzel = ^Uzel;
+     Uzel = \RECORD
+       Data: TypData;
+       Vlevo, Vpravo: UkUzel;
+     \END;
+
+     Tree = UkUzel;
+\end{Verbatim}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Implementace stromu}
+\begin{Verbatim}
+\PROCEDURE Init(\VAR T: Tree);
+ \BEGIN T:=\NIL
+ \END;
+
+\PROCEDURE Insert(\VAR T: Tree; E: TypData);
+ \BEGIN 
+       \IF T=\NIL \THEN \BEGIN
+          new(T);
+          T^.Data:=E;
+          T^.Vlevo:=nil;
+          T^.Vpravo:=nil
+       \END \ELSE 
+          \IF E<=T^.Data \THEN Insert(T^.Vlevo, E)
+                        \ELSE Insert(T^.Vpravo, E)
+ \END;
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Implementace stromu}
+\footnotesize
+\begin{Verbatim}
+\PROCEDURE InOrder(T: Tree);
+ \BEGIN \IF T<>\NIL \THEN \BEGIN
+         InOrder(T^.Vlevo);
+         writeln(T^.Data);
+         InOrder(T^.Vpravo)
+       \END;
+ \END;
+\VAR S: Tree;
+    C: longint;
+
+\BEGIN Init(S);
+      \WHILE \NOT eof \DO \BEGIN
+         readln(C);
+         Insert(S,C)
+      \END;
+      InOrder(S);
+\END.
+\end{Verbatim}
+\end{frame}
+
+
+\kap{Komplexní domácí úloha}
+
+\begin{frame}[fragile]\frametitle{Komplexní domácí úloha}
+\begin{itemize}
+\bod Implementujte následující abstraktní datové typy, a~to:
+\begin{enumerate}
+\bod v~\uv{obyčejném} strukturovaném tvaru
+\bod v~objektovém tvaru
+\bod s~obecnými datovými položkami
+\bod vždy v~programové jednotce (modulu)
+\bod s~variantami konkrétních typů (pole, dyn. struktury, soubory
+   bez udání typu).
+\end{enumerate}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Průpravný příklad}
+\begin{itemize}
+\bod Průpravný příklad -- implementace obyčejného lineárního dynamického jednosměrného
+seznamu s~operacemi:
+\begin{itemize}
+  \bod vložení prvku (na začátek, za/před vybraný prvek, na konec)
+  \bod odstranění libovolného prvku
+  \bod zjištění počtu prvků, výpisy, prohledávání
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\pkap{Abstraktní typy}
+\begin{frame}[fragile]\frametitle{Abstraktní typy}
+\begin{itemize}
+\bod \vyznac{Seznamy:} 
+\begin{itemize}
+  \bod zásobník
+  \bod fronta
+  \bod prioritní fronta
+  \bod obecný seznam (jednosměrný, dvousměrný, cyklický)
+  \bod seznam s~aktivním prvkem
+\end{itemize}
+
+\bod \vyznac{Stromy:}
+\begin{itemize}
+  \bod obecný strom
+  \bod binární strom (uspořádaný ls<=o<ps, uspořádaný o>ls,ps)
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Abstraktní typy}
+\begin{itemize}
+\bod \vyznac{Vyhledávací tabulka:}
+\begin{itemize}
+  \bod obecná (konstruovaná různými jinými typy)
+  \bod tabulka s~rozptýlenými hesly
+  \bod stromové hledání
+\end{itemize}
+
+\bod \vyznac{Graf:}
+\begin{itemize}
+  \bod obecný graf
+  \bod orientovaný graf
+\end{itemize}
+
+\bod \vyznac{Řídké pole:}
+\begin{itemize}
+  \bod obecné
+  \bod trojúhelníková matice
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\end{document}

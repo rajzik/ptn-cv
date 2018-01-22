@@ -1,0 +1,5 @@
+vystup.bin
+Jan,Kos,64
+Jaroslava,Němcová,34
+Pavel,Šrom,190
+Václav,Daněk,22

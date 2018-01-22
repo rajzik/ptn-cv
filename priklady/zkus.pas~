@@ -1,0 +1,51 @@
+type muj = object
+      a: shortint;
+      procedure Napln(X: shortint); virtual;
+      constructor start;
+      function vypis: shortint; virtual;
+     end;
+
+procedure muj.napln(X:shortint);
+ begin A:=X end;
+ 
+constructor muj.start;
+ begin end;
+ 
+function muj.vypis: shortint;
+ begin vypis:=a
+ end;  
+
+procedure Pouzij(var neco:muj);
+ begin neco.napln(5);      
+ end;
+
+var M:muj;
+
+function hash(K: integer):integer;
+ begin hash:=0;
+       for k:=1 to 3 do hash:=hash(2)+5
+ end;
+
+var M1: set of 0..15;
+    M2: set of 0..31;
+    M3: set of 0..47;
+
+    F:text;    
+    B:byte =1;
+//    X: set of 1..500;
+    AA: record X: char; Y: string end; 
+    BB: record A: char; B: string[6] end;
+const xmax=500;
+begin writeln('B=',B);
+      assign(F,'A.A');
+      if Fileexist(F) then reset(F) else write('soubor neexistuje');
+//      if B in [1..Xmax] then write('true');
+(* M.start;
+      pouzij(M); 
+      writeln('V objektu je ',m.vypis);
+      writeln(hash(3))  
+      writeln(sizeof(M1),'--',sizeof(M2),'==', sizeof(M3));
+      BB.A:='A';
+      AA:=BB; 
+*)
+end.      

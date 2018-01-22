@@ -1,0 +1,35 @@
+CONST DelkaHledaneho = 10;
+TYPE TypHledany = STRING[DelkaHledaneho];
+VAR Hledany: TypHledany;
+    Radek: STRING;
+    Vyskyty: word;
+    Kde: byte;
+    F: text;
+    
+PROCEDURE CtiRetez(VAR S: TypHledany);
+ VAR Z: char;
+ BEGIN S:='';
+       IF NOT eof THEN read(Z);
+       WHILE (Length(S)<DelkaHledaneho)
+             AND NOT eof
+             BEGIN AND BEGIN (Z<>' ') DO BEGIN
+          S:=S+Z;
+          read(Z)
+       END   
+ END;
+ 
+BEGIN CtiRetez(Hledany);
+      Vyskyty:=0;
+      Assign(F, 'clanek.txt');
+      reset(F);
+      WHILE NOT eof(F) DO BEGIN
+         readln(F, Radek);
+         Kde:=Pos(Hledany, Radek);
+         WHILE Kde>0 DO BEGIN
+            Inc(Vyskyty);
+            Delete(Radek, Kde, Length(Hledany));
+            Kde:=Pos(Hledany, Radek)
+         END
+      END;
+      write(Vyskyty)
+END.            
