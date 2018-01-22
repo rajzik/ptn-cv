@@ -1,0 +1,48 @@
+
+
+ 1. Každý řádek standardního vstupu začíná osmiznakovým identifikátorem 
+ a za ním následují libovolná data. 
+ Vytvořte program, který zpracuje takový standardní vstup, 
+ přičemž použije osmiznakový identifikátor řádku jako jméno textového 
+ souboru s rozšířením ".txt" v aktuálním adresáři, 
+ na konec tohoto souboru vždy přidá data daného řádku.
+
+Na začátku předpokládejte, že žádný z textových souborů neexistuje. 
+Při vstupu prvního řetězce daný soubor nejdříve založte a vložte do něj první konstantní řádek ve tvaru '*** začátek souboru ***'. 
+Po skončení zpracování standardního vstupu vypište na standardní výstup seznam jmen založených souborů s počtem řetězců,
+které do každého souboru byly vloženy.
+
+2. Předpokládejte soubor bez udání typu, v němž jsou uloženy údaje o knihách – název knihy, autor (řetězce o délce nepřesahující 200 znaků v kódování UTF-8 uložené jako posloupnosti bajtů zakončené bajtem s hodnotou nula) a ISBN (13 znaků). Čtěte tento soubor, získané záznamy seřaďte podle ISBN a vypište na standardní výstup. Pro řazení použijte binární uspořádaný strom.
+
+3. Předpokládejte, že existuje programový modul s následujícím rozhraním:
+
+unit Uschovna;
+interface
+type PPrvek = ^TPrvek;
+TPrvek = record
+Data: pointer;
+Nasled: PPrvek
+end;
+
+TTvar = function (A: pointer): string;
+TZaklad = object
+Zac, Kon: PPrvek;
+constructor Init;
+procedure Vloz(P: pointer); virtual; // vloží nový prvek s daty P na konec seznamu
+procedure Vystup(Tvar: TTvar; var F: text);
+// vypíše celý seznam do souboru F ve tvaru podle funkce Tvar
+end;
+
+Vytvořte program využívající tento modul k řešení následující úlohy: Na standardním vstupu je na každém řádku název zboží a jeho jednotková cena (reálné číslo). Mezi názvem a cenou je jako oddělovač znak středník. Vypište tyto údaje na standardní výstup tak, že řádky budou v obráceném pořadí. Využijte k tomu dědice objektu TZaklad, jemuž odpovídajícím způsobem změníte metodu Vloz.
+
+4. Vytvořte obdélníkovou datovou strukturu implementující data křížovky o 
+N řádcích a M sloupcích. 
+Každé políčko křížovky může obsahovat buď písmeno 
+(obecně jeden znak, kde mezera znamená nevyplněné písmeno), 
+jednu legendu (libovolný řetězec doplněný informací o směru vodorovném nebo svislém), 
+dvě legendy (vodorovnou a svislou) nebo může být zcela prázdné (nevyužitá plocha). 
+Legenda pro vodorovný směr je vždy vlevo od daného slova nebo sousloví, 
+legenda pro svislý směr je vždy nahoře nad slovem nebo souslovím. 
+Nad vytvořenou strukturou realizujte operaci, 
+která na základě zadané souřadnice nějaké legendy zjistí, 
+zda je v křížovce vyplněno odpovídající slovo ve všech požadovaných písmenech.

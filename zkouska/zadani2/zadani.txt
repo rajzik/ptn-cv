@@ -1,0 +1,19 @@
+1. Definujte dva polymorfní objekty Fronta a Prioritní fronta s metodami vkládání a odebrání prvku. Vkládané hodnoty jsou reprezentovány obecnými ukazateli, rozhodnutí o prioritě řeší funkce nastavená při inicializaci v objektu Prioritní fronta v odpovídající datové složce. Jako základní datovou strukturu použijte pole o 10000 prvcích. Definujte všechny potřebné datové typy a těla všech metod.
+
+
+
+2. Na standardním vstupu je připraven text, jehož znaky jsou v kódu ASCII (ordinální hodnoty jsou v rozmezí 0 až 127). Zabezpečte tyto znaky sudou paritou v nejvyšším bitu a výsledek vypište na standardní výstup. (Sudá parita: doplňuje se podle potřeby binární jednička tak, že počet binárních jedniček v daném bytu je sudý.)
+
+
+
+3. Napište programový modul implementující abstraktní datový typ „kruhový seznam“ pomocí jednosměrné dynamické struktury. Datovými složkami budou obecné ukazatele. Operace: inicializace, vložení prvku, výpis obsahu seznamu. Místo, kam se vkládají nové prvky, není podstatné (vhodně zvolte). Pro výpis obsahu seznamu do textového souboru navrhněte vnější funkci, jejíž tělo definuje uživatel vně modulu a která bude parametrem vypisovací operace.
+
+
+
+4. Uvažujte dynamicky realizovaný neuspořádaný binární strom s datovými složkami nabývajícími čtyř hodnot (řešte výčtovým datovým typem): svíčka, ozdobná baňka, čokoládová figurka, nic. Implementujte operaci, která spočítá počet listů tohoto stromu obsahujících zadanou hodnotu. Doplňte všechny potřebné definice datových typů.
+
+// doplněno: type EnumType = (Svicka, OzdobnaBanka, CokoladovaFigurka, Nic);
+// var Vycet:EnumType;
+// Vycet := OzdobnaBanka;
+
+

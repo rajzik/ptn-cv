@@ -1,0 +1,23 @@
+1)
+Předpokládejte implementaci tabulky s rozptýlenými hesly pomocí základního pole s indexy od 1 do Max a synonymy v jednosměrných dynamických seznamech. Do tabulky se ukládají znakové řetězce. Vytvořte proceduru, která uloží tuto tabulku do souboru bez udání typu tak, aby výsledek zabíral minimální prostor, ale aby se tabulka dala z tohoto souboru opět v identické podobě načíst.
+Na tuto otázku můžete odpovědět libovolně dlouhým textem. Odpověď bude vyhodnocena zkoušejícím ručně.
+
+2)
+Napište proceduru, která zruší v binárním neuspořádaném stromu každý listový uzel se zadanou hodnotou datové složky. Je-li hodnota nalezena v nelistovém uzlu, neprovádí se žádná akce.
+Na tuto otázku můžete odpovědět libovolně dlouhým textem. Odpověď bude vyhodnocena zkoušejícím ručně
+
+3)
+Napište programový modul, který implementuje operace pro práci s grafickými úsečkami. Úsečka je reprezentována délkou ve vodorovném směru a délkou ve svislém směru. Modul bude obsahovat operaci pro grafické sčítání úseček (sčítají se odpovídající složky), pro násobení velikosti úsečky reálným číslem a pro vykreslení úsečky. Způsob vykreslení určuje procedura, která bude definována vně modulu.
+
+V určité aplikaci budete chtít vykreslovat tyto úsečky procedurou, k jejíž činnosti budete potřebovat počáteční bod úsečky a měřítko zobrazení. Navrhněte takovou uživatelskou proceduru, která odpovídá návrhu v uvedeném modulu.
+
+4)
+Je dáno:
+
+procedure vypis(x: struktura);
+ var i: word;
+ begin x.start;
+       for i:=1 to x.posled do x.out(i)
+ end;
+
+Definujte dva objekty včetně všech potřebných metod, které mohou být skutečným parametrem této procedury. První objekt implementuje frontu, druhý zásobník. Datovou složku struktury zvolte tak, aby ji bylo možno přímo procedurou write vypisovat na standardní výstup.

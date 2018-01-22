@@ -1,0 +1,35 @@
+1)	
+Na disku existuje soubor bez udaného typu, který obsahuje informace o pracovnících -- jméno, příjmení (řetězce uložené jako posloupnosti znaků 
+zakončené bajtem s hodnotou nula), věk (1 B) a plat (3 B). Zjistěte průměrný plat pracovníků pro všechny věky v souboru (tj. průměrný plat třicetiletých, jednatřicetiletých atd.).
+Na tuto otázku můžete odpovědět libovolně dlouhým textem. Odpověď bude vyhodnocena zkoušejícím ručně.
+
+
+2)
+Napište podprogram, jehož parametrem je polymorfní objekt představující implementaci uspořádaného stromu s obecnými datovými složkami. Podprogram využije tohoto objektu k seřazení řady reálných čísel ze standardního vstupu podle absolutních hodnot. K podprogramu zapište definici nějakého objektu, který odpovídá zapsanému použití, ale nezapisujte těla jeho metod. Deklarujte instanci definovaného objektu a použijte (vyvolejte) navržený podprogram.
+Na tuto otázku můžete odpovědět libovolně dlouhým textem. Odpověď bude vyhodnocena zkoušejícím ručně.
+
+
+
+3)
+Předpokládejte, že existuje programový modul s názvem MQueue, který implementuje prioritní frontu (čelo fronty obsahuje prvek s nejvyšší prioritou). Jeho rozhraní je:
+
+interface
+type TQue = ... {definice není pro řešení této úlohy podstatná}
+     TLessThan = function (X, Y: pointer): boolean;
+
+         {true, když priorita X je menší než priorita Y}
+     TDisplay = procedure (A: pointer);
+         {způsob výpisu údaje A}
+procedure QInit(var Q: TQue);
+procedure QueUp(var Q: TQue; Data: pointer; Priority: TLessThan);
+procedure QDisplay(Q: TQue; Disp: TDisplay);
+implementation ...
+
+Napište program, který využívá tohoto modulu pro seřazení řetězců ze standardního vstupu podle délky.
+Na tuto otázku můžete odpovědět libovolně dlouhým textem. Odpověď bude vyhodnocena zkoušejícím ručně.
+uses MQueue;
+
+
+4)
+Na disku existuje soubor bajtů. Diskové jméno souboru je zadáno z prvního parametru v příkazovém řádku, pokud parametr není zadán, uvažujte soubor v aktuálním adresáři s názvem „udata.bin“. Přečtěte jeho jednotlivé bajty a zjistěte, v kolika z nich se vyskytuje více binárních jedniček než binárních nul.
+Na tuto otázku můžete odpovědět libovolně dlouhým textem. Odpověď bude vyhodnocena zkoušejícím ručně.

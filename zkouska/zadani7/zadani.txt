@@ -1,0 +1,116 @@
+(*1]
+Předpokládejte, že existuje naplněné pole N záznamů
+ o turistech. Každý turista má v záznamu jméno, příjmení (znakové řetězce),
+ věk a počet nachozených kilometrů za rok 2017 (celá čísla).
+ Definujte potřebné datové typy a napište proceduru, která všechny záznamy z tohoto pole uloží do souboru bez udání typu tak, 
+ aby řetězce byly uloženy na minimálním prostoru.
+*)
+
+type 
+turista= record
+ jmeno,primeni:string;
+ vek:byte;
+ km:word;
+end;
+
+seznamtur= array of turista;(*videl jsem ze se tohle da dinamicky naalokovat pomoci setlength(promena(*typu array*),N); ale neni to dulezite*)
+
+
+// predpokladam dinamickou alokaci array tak musim vedet jak je to dlouhe
+procedure vypis(var kam:string;co:seznamtur;n:longword);
+var f:file; poc:longword;
+begin
+assign(f,kam);
+rewrite(f,1);
+for poc:=1 to n do begin
+blockwrite(f,co[poc].jmeno,byte(co[poc].jmeno[0]));
+blockwrite(f,co[poc].primeni,byte(co[poc].primeni[0]));
+blockwrite(f,co[poc].vek,1);
+blockwrite(f,co[poc].km,sizeof(km)));
+end;
+
+close(f)
+end;
+
+
+
+(*2]Předpokládejte, že existuje objekt typu Fronta implementující obyčejnou frontu řetězcových hodnot.
+ Metodami objektu jsou Init (pro počáteční inicializaci), QueUp (přidání do fronty), 
+ Remove (odebrání prvku z fronty). Vytvořte polymorfního následníka tohoto objektu, který tuto obyčejnou frontu mění na frontu cestujících na lanovku,
+ kdy každým odebráním z fronty zmizí 6 prvků (kapacita jedné kabinky) místo jednoho.
+
+Do řešení napište potřebnou definici původního objektu Fronta pro implementaci fronty bez těl metod, datový typ nového objektu a těla POUZE JEHO metod.
+*)
+type
+//datove typy pro predka
+node= record
+data:string;
+dalsi:uknode;
+end;
+uknode=node^;
+mojefr = record
+zac,kon:uknode;
+end;
+
+//definice puvodniho
+fronta = object 
+data:mojefr;
+procedure queUP(co:string);
+function remove:string;
+constructor Init()
+end;
+
+
+
+//definice dedice
+lanovka = object(fronta)
+function odeber: array of string [1..6];
+end;
+
+//implementace nove funkce
+function lanovka.odeber: array of string [1..6];
+poc:byte;
+begin
+poc:=1;
+for poc to 6 do odeber[poc]:=remove;
+end;
+
+
+(*3]
+Předpokládejte, že již existuje modul Matice s tímto rozhraním:
+
+interface
+type MatXY = ... {typ je nějak definován, není podstatné}
+     TypJakVypsat = function (A: pointer): string;
+procedure Init(var M: MatXY); {vyprázdnění matice}
+procedure Vypis(M: MatXY; JakVypsat: TypJakVypsat);
+procedure Vloz(var M: MatXY; X, Y: word; D: pointer);
+implementation
+
+Tento modul chceme použít pro ukládání informací o výkonech pracovníků na jednotlivých zakázkách. 
+Čísla pracovníků tvoří řádkové indexy, čísla zakázek sloupcové indexy, 
+v příslušném místě matice je reálné číslo představující ohodnocení výkonu v korunách.
+Napište program využívající tento modul, v němž naplníte matici údaji čtenými ze standardního vstupu
+ a vypíšete obsah matice předdefinovanou procedurou Vypis. 
+ Výpis každé hodnoty proveďte na 5 pozic celkem a s dvěma desetinnými místy, za každým číslem vypište dvě mezery.
+*)
+uses Matice;
+ 
+function pis(co:pointer):string;
+begin
+pis:=real(co^):5:2+'kč  ';
+end;
+
+var moje:matxy; data:real^; x,y:word;
+begin
+Init(moje);
+  while not eof do begin
+  new(data);
+  read(x,y,data^);(*indexy(cisla pracovniku a zakazky) uvazuji ze se zadavaji taky z standardniho vstupu jelikoz neni urceno jak naplnit*)
+  vloz(moje,x,y,pointer(data))
+  end;
+vypis(moje,@pis);
+end.
+
+
+// pak byl jeste jeden kde si precetl 32 bitové celé cislo z vstupu vypsal ho binarne a vypsal si paritni byt  ( samej šift right a andování)

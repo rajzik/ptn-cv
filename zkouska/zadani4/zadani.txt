@@ -1,0 +1,219 @@
+//Napište proceduru, která zruší v binárním neuspořádaném stromu každý listový uzel se zadanou hodnotou datové složky. Je-li hodnota nalezena v nelistovém uzlu, neprovádí se žádná akce.
+
+tx = array [1..20] of record
+                               a : string [10];
+                               b : array[byte] of boolean
+                               end;
+
+hodnota = word;
+
+procedure Zrus(var S : TStrom ; D : hodnota);
+var pom : TStrom;
+begin
+    pom:=S;
+    while pom <> nil do begin
+      if pom^.data > D then Zrus(pom^levy,D)
+      else Zrus(pom^.pravy,D)
+
+      if pom^.data = D then dispose(pom);
+
+    end
+end;
+
+
+
+////////////Předpokládejte implementaci tabulky s rozptýlenými hesly pomocí základního pole s indexy od 1 do Max a synonymy v jednosměrných dynamických seznamech. Do tabulky se ukládají znakové řetězce. Vytvořte proceduru, která uloží tuto tabulku do souboru bez udání typu tak, aby výsledek zabíral minimální prostor, ale aby se tabulka dala z tohoto souboru opět v identické podobě načíst.
+
+
+
+
+program hash;
+
+const
+max = 50;
+rozah = 1..max;
+
+Tprvek = ^prvek;
+prvek = record
+  data : string
+  end;
+
+H = array[1..Max] of Tprvek
+hash = ^H;
+procedure Uloz(var h : hash);
+var F : file; I : rozah;
+  assign(F,'file');
+  reset(F,1);
+  I:=0;
+
+  while not eof(F) do begin
+    for I:=1 to max do begin
+    while H^[I] <> nil do begin blockwrite(F,H^[I]^,sizeOf(Tprvek)); H^[I]:=H^[I]^.dalsi end
+    end
+   end
+  end;
+
+// vypisovani ulozim si do K :=I a for K downto 1 do blockread(F,F,H^[I]^,sizeOf(Tprvek))
+
+
+begin
+
+end;
+
+
+
+
+/////////////   Napište programový modul, který implementuje operace pro práci s grafickými úsečkami. Úsečka je reprezentována délkou ve vodorovném směru a délkou ve svislém směru. Modul bude obsahovat operaci pro grafické sčítání úseček (sčítají se odpovídající složky), pro násobení velikosti úsečky reálným číslem a pro vykreslení úsečky. Způsob vykreslení určuje procedura, která bude definována vně modulu.
+
+///V určité aplikaci budete chtít vykreslovat tyto úsečky procedurou, k jejíž činnosti budete potřebovat počáteční bod úsečky a měřítko zobrazení. Navrhněte takovou uživatelskou proceduru, která odpovídá návrhu v uvedeném modulu.
+
+
+unit modul;
+
+
+ interface
+
+type
+
+
+
+
+ Tusecka = ^usecka;
+ usecka = record
+   delkaH,delkaS : integer;
+   dalsi : Tusecka
+   end;
+
+
+procedure Init(var U : Tusecka);
+ procedure Scitani(var U : Tusecka; var vysledek : longint);
+ procedure Nasob(var U : Tusecka;  var vysledek : longint);
+
+
+implementation
+
+procedure Pridej (var U : Tusecka; var u : usecka)
+var pom : Tusecka;
+ begin pom :=U;
+ pom^.delkaH:=u.delkaH;
+ pom^.delkaS:=u.delkaS;
+ pom^.dalsi:=U;
+ U:=pom
+ end;
+
+
+
+procedure Nacti(F : text; var u : usecka);
+var pom : Tusekca;
+  while not eof(F) do begin
+   readln(F,u.delkaH,u.delkaS)
+   Pridej(pom,u)
+  end;
+
+  end;
+
+procedure Init(var U : Tusecka);
+begin
+   U := nil
+end;
+
+procedure Scitani(var U : Tusecka; var vysledek : longint);
+var pom : Tusecka;
+  pom:=U;
+  vysledek:=0;
+  while pom <> nil then begin
+    vysledek:= vyseldek + (pom^.delkaH + pom^delkaS);
+  end;
+
+
+procedure Nasob(var U : Tusecka;  var vysledek : longint);
+ var pom : Tusecka;
+  begin
+  pom:=U;
+  vysledek:=0;
+  while pom <> nil then begin
+    vysledek:= vyseldek + (pom^.delkaH * pom^delkaS);
+  end
+   end;
+
+procedure Vyskresly(U : Tusecka; F : text );
+ var pom : Tusecka;
+
+ begin
+   pom:=U;
+   while pom <> nil then begin
+     writeln(F,pom^.delkaH,pom^.delkaS)
+   end;
+
+
+
+
+
+
+
+end.
+
+
+///////////
+
+
+TFronta = ^Fronta;
+TZasob = ^Zasob;
+
+Zasob = record
+data : word;
+dalsi TZasob;
+end;
+
+Fronta = record
+  data : word;
+  dalsi : TFrona
+  end;
+
+struktura = object
+F : TFrota;
+construtor start;
+procedure out( A : word);
+function posledni;
+end;
+
+
+Ustruktua = object(struktura)
+Z : TZasob;
+construtor start;
+end;
+
+constructor struktura.start;
+begin
+
+end;
+
+procedure struktura.out(A : word);
+begin
+  writeln(stdout,' Prvek: ',A)
+  end;
+
+
+function struktura.posled;
+var i : word; pom :=F;
+  begin
+     if pom = nil then begin
+     I:=0
+     end else begin
+     inc(i)
+     while pom <> nil then begin
+       pom:=pom^.dalsi;
+       inc(i)
+     end
+     end
+
+struktura.posled:=i
+      end;
+
+  procedure vypis(x: struktura);
+ var i: word;
+ begin x.start;
+       for i:=1 to x.posled do x.out(i)
+ end;
+
+//Definujte dva objekty včetně všech potřebných metod, které mohou být skutečným parametrem této procedury. První objekt implementuje frontu, druhý zásobník. Datovou složku struktury zvolte tak, aby ji bylo možno přímo procedurou write vypisovat na standardní výstup.
