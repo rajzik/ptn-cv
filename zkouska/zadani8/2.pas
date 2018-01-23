@@ -31,7 +31,7 @@ var
 begin
   fileName := paramStr(1);
   assign(f, fileName);
-  reset(f);
+  reset(f, 1);
   i := 0;
   prumer := 0;
   
@@ -60,3 +60,9 @@ begin
   
   
 end.
+
+
+{
+  BTW podle nekoho neukladam jmeno a prijmeni pro maximum
+  ale `nejvysiPocet := current;` tohle je asi co????????????????
+}

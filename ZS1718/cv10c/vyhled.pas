@@ -38,6 +38,7 @@ function Rozptyluj(A: Prvek): Indexy;
        end;
  end; 
 
+
 begin VT.Start(@Porovnani, @Rozptyluj);
       while not eof do begin
          R:=DejSlovo(input);
