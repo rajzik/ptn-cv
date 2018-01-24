@@ -32,7 +32,7 @@ type
     constructor myTree.init;
         function leftOrRight(pre, curr: pointer): boolean;
         begin
-            leftOrRight := abs(real(pre)) < abs(real(curr));  
+            leftOrRight := abs(real(pre^)) < abs(real(curr^));  
         end;    
 
     begin
