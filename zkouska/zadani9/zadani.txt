@@ -1,0 +1,8 @@
+Napište podprogram, jehož parametrem je polymorfní objekt představující implementaci uspořádaného stromu s obecnými datovými složkami. 
+Podprogram využije tohoto objektu k seřazení řady reálných čísel ze standardního vstupu podle absolutních hodnot. 
+K podprogramu zapište definici nějakého objektu, 
+který odpovídá zapsanému použití, 
+ale nezapisujte těla jeho metod.
+Deklarujte instanci definovaného objektu a použijte (vyvolejte) navržený podprogram.
+
+Na tuto otázku můžete odpovědět libovolně dlouhým textem. Odpověď bude vyhodnocena zkoušejícím ručně.
