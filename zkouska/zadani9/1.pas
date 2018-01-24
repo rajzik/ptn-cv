@@ -11,9 +11,19 @@ Na tuto otázku můžete odpovědět libovolně dlouhým textem. Odpověď bude 
 
 }
 
-uses tree; 
 
 type 
+    typJak = function(pre, curr: pointer) : boolean;
+    
+    pStrom = ^strom;
+    strom = object
+        data: pointer;
+        left, right: pStrom;
+        kam: typJak;
+        constructor init(jak: typJak);
+        procedure pridej(item: pointer);
+    end;
+
     myTree = object(strom) 
         constructor init;
         procedure add(cislo: real);
