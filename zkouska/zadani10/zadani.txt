@@ -1,0 +1,6 @@
+1. sifrovani 
+heslo z prvniho argumentu, vzdy 4 prismena, pokud je vetsi pouzijte posledni 4 pismena, pokud mensi pouzijte defaultni heslo.
+druhy argument programu je vystupni soubor.
+zasifrujte pomoci xor;
+
+
